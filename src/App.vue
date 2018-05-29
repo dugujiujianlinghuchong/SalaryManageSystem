@@ -155,7 +155,6 @@ export default {
     }
 
     this.validateUserInfo();
-    // fuck
   }
 };
 </script>
