@@ -1,0 +1,7 @@
+div {
+  display: inline-block;
+}
+div label {
+  color: #606266;
+  font-size: 12px;
+}
