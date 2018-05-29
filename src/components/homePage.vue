@@ -129,7 +129,6 @@ export default {
         )
         .then(function(response) {
           var data = response.data;
-          // console.log(data);
           var tableHead = [];
           data.forEach(element => {
             var obj = {};
@@ -140,6 +139,11 @@ export default {
             tableHead.push(obj);
           });
           vueThis.tableHead = tableHead;
+          vueThis.tableHead.unshift({
+            prop: "S_GZHJ",
+            label: "工资总计",
+            fixed: true
+          });
           vueThis.tableHead.unshift({
             prop: "D_BMMC",
             label: "部门名称",
@@ -166,6 +170,7 @@ export default {
         .then(function(response) {
           var tableData = response.data;
           tableData.forEach(function(item, index) {
+            console.log(item);
             var obj = {};
             item.forEach(function(innerItem) {
               obj[innerItem.Key] = innerItem.Value;

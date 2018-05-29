@@ -150,7 +150,7 @@ export default {
     // 拒绝ie用户
     var userAgent = window.navigator.userAgent;
     if (userAgent.indexOf("NET") != -1 && userAgent.indexOf("rv") != -1) {
-      alert("这里不欢迎ie用户，guna！");
+      // alert("这里不欢迎ie用户，guna！");
       // return;
     }
 

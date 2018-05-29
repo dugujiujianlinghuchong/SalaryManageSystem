@@ -8,6 +8,9 @@ import Axios from 'axios'
 import Vuex from 'vuex'
 import echarts from 'echarts'
 import HomePage from './components/homePage.vue'
+// 兼容ie
+import promise from 'es6-promise'
+promise.polyfill();
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
