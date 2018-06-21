@@ -24,13 +24,15 @@ export default {
   },
   methods: {
     getOptionList() {
-      var vueThis = this;
-      vueThis.$http
-        .get("http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllGZMB")
-        .then(function(response) {
-          vueThis.optionsOfSelector = response.data;
+      let vueThis = this;
+      vueThis.$get(
+        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllGZMB",
+        {},
+        data => {
+          vueThis.optionsOfSelector = data;
           vueThis.input_value = vueThis.optionsOfSelector[0].MC;
-        });
+        }
+      );
     },
     changeValue() {
       this.$emit("changeGZMB", this.input_value);

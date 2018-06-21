@@ -155,16 +155,15 @@ export default {
     },
     // 获取员工信息
     getAllStaffInfo() {
-      var vueThis = this;
-      vueThis.$http
-        .get(
-          "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetMemberList_FY",
-          { params: vueThis.searchField }
-        )
-        .then(function(response) {
-          vueThis.totalRows = response.data.total;
-          vueThis.tableData = response.data.rows;
-        });
+      let vueThis = this;
+      vueThis.$get(
+        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetMemberList_FY",
+        vueThis.searchField,
+        data => {
+          vueThis.totalRows = data.total;
+          vueThis.tableData = data.rows;
+        }
+      );
     }
   },
   created() {

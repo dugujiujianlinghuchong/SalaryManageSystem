@@ -129,27 +129,28 @@ export default {
   },
   methods: {
     getStaffInfo() {
-      var vueThis = this;
-      vueThis.$http
-        .get(
-          "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAMemberInfoByLSXX",
-          { params: vueThis.searchFiled }
-        )
-        .then(function(response) {
-          vueThis.staffInfo = response.data;
-        });
+      let vueThis = this;
+      // get方法内部无法直接获取searchFiled?????
+      let params = vueThis.searchFiled
+      vueThis.$get(
+        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAMemberInfoByLSXX",
+        params,
+        data => {
+          vueThis.staffInfo = data;
+        }
+      );
     },
     getSalaryInfo() {
-      var vueThis = this;
-      vueThis.$http
-        .get(
-          "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAMemberGZB_View",
-          { params: vueThis.searchFiled }
-        )
-        .then(function(response) {
-          vueThis.tableData = response.data;
-          console.log(vueThis.tableData);
-        });
+      let vueThis = this;
+      // get方法内部无法直接获取searchFiled?????
+      let params = vueThis.searchFiled
+      vueThis.$get(
+        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAMemberGZB_View",
+        params,
+        data => {
+          vueThis.tableData = data;
+        }
+      );
     }
   },
   created() {

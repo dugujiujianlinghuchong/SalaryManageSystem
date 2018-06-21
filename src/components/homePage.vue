@@ -117,18 +117,15 @@ export default {
     },
     // 获取员工工资信息
     getAllMemberSalary() {
-      var vueThis = this;
+      let vueThis = this;
       vueThis.tableHead = [];
       vueThis.tableData = [];
 
       // 获取表头信息
-      vueThis.$http
-        .get(
-          "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllGZX_ByGZMBLX",
-          { params: { strGZMBMC: vueThis.searchField.gzmbmc } }
-        )
-        .then(function(response) {
-          var data = response.data;
+      vueThis.$get(
+        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllGZX_ByGZMBLX",
+        { strGZMBMC: vueThis.searchField.gzmbmc },
+        data => {
           var tableHead = [];
           data.forEach(element => {
             var obj = {};
@@ -159,25 +156,23 @@ export default {
             label: "姓名",
             fixed: true
           });
-        });
-
+        }
+      );
       // 获取工资数据
-      vueThis.$http
-        .get(
-          "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllMember_GZB_ByBMBH",
-          { params: vueThis.searchField }
-        )
-        .then(function(response) {
-          var tableData = response.data;
-          tableData.forEach(function(item, index) {
-            console.log(item);
+      vueThis.$get(
+        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllMember_GZB_ByBMBH",
+        vueThis.searchField,
+        data => {
+          data.forEach(function(item, index) {
+            // console.log(item);
             var obj = {};
             item.forEach(function(innerItem) {
               obj[innerItem.Key] = innerItem.Value;
             });
             vueThis.tableData.push(obj);
           });
-        });
+        }
+      );
     }
   },
   created() {

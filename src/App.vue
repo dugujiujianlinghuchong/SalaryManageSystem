@@ -8,12 +8,28 @@
           <el-dropdown>
             <i class="el-icon-setting" style="margin-right: 15px;margin-left: 15px"></i>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>退出系统</el-dropdown-item>
-              <el-dropdown-item>删除</el-dropdown-item>
+              <el-dropdown-item>
+                <span @click="yhbh=''">退出系统</span>
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
           <span>{{ dlm }}</span>
         </div>
+        <!-- <div class="topbar-account topbar-btn">
+          <el-dropdown trigger="click">
+            <span class="el-dropdown-link userinfo-inner"><i class="iconfont icon-user"></i> {{nickname}}  <i
+              class="iconfont icon-down"></i></span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>
+                <div @click="jumpTo('/user/profile')"><span style="color: #555;font-size: 14px;">个人信息</span></div>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <div @click="jumpTo('/user/changepwd')"><span style="color: #555;font-size: 14px;">修改密码</span></div>
+              </el-dropdown-item>
+              <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div> -->
       </el-header>
       <!-- 左栏 -->
       <el-col id="left" :xs="7" :sm="6" :md="5" :lg="3" :xl="3">
@@ -123,49 +139,29 @@ export default {
   },
   methods: {
     handleLogin() {
-      var vueThis = this;
-      vueThis.$http
-        .get(
-          "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/ValidateUserInfo",
-          { params: vueThis.account }
-        )
-        .then(function(response) {
-          if (response.data == "") {
+      let vueThis = this;
+      vueThis.$get(
+        "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/ValidateUserInfo",
+        vueThis.account,
+        data => {
+          if (data == "") {
             vueThis.$alert("用户名或密码错误，请检查后重试！", "提示", {
               confirmButtonText: "确定"
             });
           }
-          vueThis.yhbh = response.data.YHBH;
-          vueThis.dlm = response.data.XTDLM;
+          vueThis.yhbh = data.YHBH;
+          vueThis.dlm = data.XTDLM;
 
           // 将系统信息写入Vuex
           var systemInfo = {};
           systemInfo.yhbh = vueThis.yhbh;
           systemInfo.screenWidth = document.body.offsetWidth;
           vueThis.$store.commit("getSystemInfo", systemInfo);
-        });
+        }
+      );
     },
-    // validateUserInfo() {
-    //   var vueThis = this;
-    //   vueThis.$http
-    //     .get(
-    //       "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/ValidateUserInfo",
-    //       { params: vueThis.account }
-    //     )
-    //     .then(function(response) {
-    //       vueThis.yhbh = response.data.YHBH;
-    //       vueThis.dlm = response.data.XTDLM;
-
-    //       // 将系统信息写入Vuex
-    //       var systemInfo = {};
-    //       systemInfo.yhbh = vueThis.yhbh;
-    //       systemInfo.screenWidth = document.body.offsetWidth;
-    //       vueThis.$store.commit("getSystemInfo", systemInfo);
-    //     });
-    // },
     addTab(targetName, title, content, closable) {
       for (var i = 0; i < this.editableTabs.length; i++) {
-        console.log(this.editableTabs[i]);
         if (this.editableTabs[i].title == title) {
           this.editableTabsValue = this.editableTabs[i].name;
           return;

@@ -25,16 +25,15 @@ export default {
   },
   methods: {
     getOptionList() {
-      var vueThis = this;
-      vueThis.$http
-        .get(
-          "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/Get_DWXX_All_QB",
-          { params: { yhbh: vueThis.yhbh } }
-        )
-        .then(function(response) {
-          vueThis.optionsOfSelector = response.data;
+      let vueThis = this;
+      vueThis.$get(
+        "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/Get_DWXX_All_QB",
+        { yhbh: vueThis.yhbh },
+        data => {
+          vueThis.optionsOfSelector = data;
           vueThis.input_value = vueThis.optionsOfSelector[0].DWQC;
-        });
+        }
+      );
     },
     changeValue() {
       this.$emit("changeBMBH", this.input_value);

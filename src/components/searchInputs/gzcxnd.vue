@@ -24,18 +24,18 @@ export default {
   },
   methods: {
     getOptionList() {
-      var vueThis = this;
-      vueThis.$http
-        .get(
-          "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetGZBNDList"
-        )
-        .then(function(response) {
-          vueThis.optionsOfSelector = response.data;
+      let vueThis = this;
+      vueThis.$get(
+        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetGZBNDList",
+        {},
+        data => {
+          vueThis.optionsOfSelector = data;
           vueThis.optionsOfSelector = vueThis.optionsOfSelector.filter(item => {
             return item.MC != "";
           });
-          vueThis.input_value = vueThis.optionsOfSelector[0].MC;
-        });
+           vueThis.input_value = vueThis.optionsOfSelector[0].MC;
+        }
+      );
     },
     changeValue() {
       this.$emit("changeND", this.input_value);

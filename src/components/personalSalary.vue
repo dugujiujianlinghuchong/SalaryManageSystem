@@ -125,14 +125,12 @@ export default {
       });
 
       //填充数据到柱状图
-      var vueThis = this;
-      vueThis.$http
-        .get(
-          "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAMemberGZB_View",
-          { params: vueThis.searchField }
-        )
-        .then(function(response) {
-          var echartData = response.data;
+      let vueThis = this;
+      vueThis.$get(
+        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAMemberGZB_View",
+        vueThis.searchField,
+        data => {
+          var echartData = data;
           var gzzj = 0,
             yAxisData = [],
             seriesData = [],
@@ -182,7 +180,8 @@ export default {
               }
             ]
           });
-        });
+        }
+      );
     }
   }
 };
