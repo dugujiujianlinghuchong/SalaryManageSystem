@@ -47,7 +47,7 @@
               <el-submenu index="2">
                 <template slot="title"><i class="el-icon-setting"></i>系统设置</template>
                   <el-menu-item index="2-1" @click="addTab(editableTabsValue, '员工管理', 'StaffManage', true)">员工管理</el-menu-item>
-                  <el-menu-item index="2-2">用户管理</el-menu-item>
+                  <el-menu-item index="2-2" @click="addTab(editableTabsValue, '用户管理', 'UserManage', true)">用户管理</el-menu-item>
               </el-submenu>
               <el-submenu index="3">
                 <template slot="title"><i class="el-icon-date"></i>系统日志</template>
@@ -61,7 +61,7 @@
         <div class="grid-content bg-purple-light">
           <el-tabs type="border-card" v-model="editableTabsValue" @tab-remove="removeTab">
             <el-tab-pane v-for="item in editableTabs" :key="item.name" :label="item.title" :name="item.name" :closable="item.closable">
-              <component :is="item.content"></component>
+              <component :is="item.content" message='子组件'></component>
             </el-tab-pane>
           </el-tabs>
         </div>
@@ -95,6 +95,7 @@ import HomePage from "./components/homePage";
 import HomePage_dialog from "./components/homePage_dialog";
 import PersonalSalary from "./components/personalSalary";
 import StaffManage from "./components/staffManage";
+import UserManage from "./components/userManage";
 
 export default {
   data() {
@@ -135,7 +136,8 @@ export default {
     HomePage,
     PersonalSalary,
     HomePage_dialog,
-    StaffManage
+    StaffManage,
+    UserManage
   },
   methods: {
     handleLogin() {

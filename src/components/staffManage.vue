@@ -19,11 +19,17 @@
         <!-- 展示内容 -->
         <el-main  v-if="!detailPage">
           <el-table :data="tableData" :max-height="tableHeigt" size='small' stripe border>
+            <el-table-column label="操作" align="center" width="200">
+              <template slot-scope="scope">
+                <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">管理历史信息</el-button>
+              </template>
+            </el-table-column>
             <el-table-column prop="S_XM" label="姓名" align="center"></el-table-column>
-            <el-table-column prop="S_XB" label="性别" align="center"></el-table-column>
+            <el-table-column prop="S_XB" label="性别" align="center" width="50"></el-table-column>
             <el-table-column prop="S_ZW" label="职务" align="center"></el-table-column>
             <el-table-column prop="S_ZC" label="职称" align="center"></el-table-column>
-            <el-table-column prop="S_CJGZSJ" label="入职时间" align="center"></el-table-column>
+            <el-table-column prop="S_CJGZSJ" label="入职时间" align="center" width="100"></el-table-column>
             <el-table-column prop="S_ccbno" label="建行卡号" align="center" width="180"></el-table-column>
             <el-table-column prop="S_icbno" label="工行卡号" align="center" width="180"></el-table-column>
             <el-table-column prop="S_mbno" label="招行卡号" align="center" width="180"></el-table-column>
@@ -110,7 +116,7 @@ export default {
   computed: {
     tableHeigt() {
       if (this.$store.state.screenWidth > 1800) {
-        return 1000;
+        return 640;
       } else if (this.$store.state.screenWidth > 1200) {
         return 430;
       }
@@ -164,6 +170,12 @@ export default {
           vueThis.tableData = data.rows;
         }
       );
+    },
+    // 编辑行
+    handleEdit(index, row) {
+      console.log(index);
+      console.log(row);
+      
     }
   },
   created() {
