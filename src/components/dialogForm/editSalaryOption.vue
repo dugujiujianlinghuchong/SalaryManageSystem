@@ -1,31 +1,37 @@
 <template>
     <div>
-        <el-dialog width="30%" :show-close="false" :close-on-click-modal="false" :close-on-press-escape="false" :visible.sync="isShow" :title="dialogTitle">
-        <!-- <el-dialog width="30%" :show-close="false" :close-on-click-modal="false" :close-on-press-escape="false" :visible.sync="dialogVisible" :title="dialogTitle"> -->
-            <el-form :model="form" :rules="rules" ref="gzxxForm">
+        <el-dialog 
+          :visible.sync="dialogVisible" 
+          :title="dialogTitle"
+          :show-close="false" 
+          :close-on-click-modal="false" 
+          :close-on-press-escape="false"
+          width="30%"  
+        >
+            <el-form :model="form" :rules="rules" ref="fieldForm">
                 <el-form-item label="工资项名称" label-width='150px' prop='W_GZXBH'>
-                <el-select v-model="form.W_GZXBH">
-                    <el-option v-for="(item,index) in optionsOfGZX" :value="item.W_GZXBH" :label="item.W_GZXMC" :key="index" style="font-size:12px"></el-option>
-                </el-select>
+                  <el-select v-model="form.W_GZXBH">
+                      <el-option v-for="(item,index) in optionsOfSelector_1" :value="item.W_GZXBH" :label="item.W_GZXMC" :key="index" style="font-size:12px"></el-option>
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="工资发送方单位" label-width='150px' prop='W_GZXFSFDWBH'>
-                <el-select v-model="form.W_GZXFSFDWBH">
-                    <el-option v-for="(item,index) in optionsOfDWXX" :value="item.DWBH" :label="item.DWQC" :key="index" style="font-size:12px"></el-option>
-                </el-select>
+                  <el-select v-model="form.W_GZXFSFDWBH">
+                      <el-option v-for="(item,index) in optionsOfSelector_2" :value="item.DWBH" :label="item.DWQC" :key="index" style="font-size:12px"></el-option>
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="工资项金额" label-width='150px' prop='W_GZXJE'>
-                <el-input v-model="form.W_GZXJE" auto-complete="off"></el-input>
+                  <el-input v-model="form.W_GZXJE" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="工资所属项目编号" label-width='150px' prop='W_GZXSSXMBH'>
-                <el-input v-model="form.W_GZXSSXMBH" auto-complete="off"></el-input>
+                  <el-input v-model="form.W_GZXSSXMBH" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="备注" label-width='150px' prop='W_BZ'>
-                <el-input v-model="form.W_BZ" auto-complete="off"></el-input>
+                  <el-input v-model="form.W_BZ" auto-complete="off"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="closeDialog" size="mini">取 消</el-button>
-                <el-button type="primary" size="mini" @click="submitForm('gzxxForm')">确 定</el-button>
+                <el-button type="primary" size="mini" @click="submitForm('fieldForm')">确 定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -33,13 +39,21 @@
 
 <script>
 export default {
-  props: ["isShow", "dialogVisible", "dialogTitle", "editOrAdd", "gzmbmc"],
+  props: [
+    "dialogVisible",
+    "dialogTitle",
+    "staffCode",
+    "searchFiled",
+    "editOrAdd",
+    "rowData",
+    "gzmbmc"
+  ],
   data() {
     return {
-      optionsOfGZX: [], // 工资项下拉列表数据
-      optionsOfDWXX: [], // 发送单位下拉列表数据
+      optionsOfSelector_1: [], // 工资项下拉列表数据
+      optionsOfSelector_2: [], // 发送单位下拉列表数据
+      // 表单提交字段
       form: {
-        // 添加工资项提交字段
         W_GZXBH: "",
         W_GZXFSFDWBH: "",
         W_GZXJE: "",
@@ -51,8 +65,8 @@ export default {
         W_ND: "",
         W_YF: ""
       },
+      // 表单字段验证规则
       rules: {
-        // 表单字段验证规则
         W_GZXBH: [
           { required: true, message: "请选择工资项", trigger: "change" }
         ],
@@ -70,37 +84,46 @@ export default {
   },
   watch: {
     editOrAdd(newVal) {
-      console.log(newVal);
+      if (newVal == "add") {
+        // 重置表单
+        for (var key in this.form) {
+          this.form[key] = "";
+        }
+        // 给隐藏字段赋值
+        this.form.S_ID = this.searchFiled.strYGBH;
+        this.form.W_ND = this.searchFiled.strND;
+        this.form.W_YF = this.searchFiled.yf;
+        this.form.W_ID = 0;
+      } else {
+        // 给表单赋默认值
+        this.form = this.rowData;
+      }
     }
   },
   methods: {
-    // 关闭对话框
-    closeDialog() {
-      this.$emit("changeDialogStatus", false);
-    },
     // 获取工资项下拉列表数据
-    getOptionsOfGZX() {
+    getOptionsOfSelector_1() {
       let vueThis = this;
       vueThis.$get(
         "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllGZX_ByGZMBLX",
         { strGZMBMC: vueThis.gzmbmc },
         data => {
-          vueThis.optionsOfGZX = data;
+          vueThis.optionsOfSelector_1 = data;
         }
       );
     },
     // 获取单位下拉列表数据
-    getOptionsOfDWXX() {
+    getOptionsOfSelector_2() {
       let vueThis = this;
       vueThis.$get(
         "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/Get_All_DWXX",
         { yhbh: vueThis.$store.state.yhbh },
         data => {
-          vueThis.optionsOfDWXX = data;
+          vueThis.optionsOfSelector_2 = data;
         }
       );
     },
-    // 提交工资项字段
+    // 提交字段
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -109,8 +132,7 @@ export default {
             "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/AddANewGZB",
             vueThis.form,
             data => {
-              vueThis.dialogVisible = false;
-              vueThis.getSalaryInfo();
+              vueThis.$emit("changeDialogStatus", false);
             }
           );
         } else {
@@ -123,11 +145,18 @@ export default {
       if (this.$refs[formName] !== undefined) {
         this.$refs[formName].resetFields();
       }
+    },
+    // 取消编辑
+    closeDialog() {
+      this.$emit("changeDialogStatus", false);
+      this.resetForm("fieldForm");
     }
   },
   created() {
-    this.getOptionsOfGZX();
-    this.getOptionsOfDWXX();
+    // 获取下拉列表
+    // this.getOptions.getOptionsOfSelector_1()
+    this.getOptionsOfSelector_1();
+    this.getOptionsOfSelector_2();
   }
 };
 </script>

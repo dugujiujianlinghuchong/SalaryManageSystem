@@ -99,7 +99,6 @@
               <template slot-scope="scope">
                 <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                 <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                <!-- <el-button size="mini" type="danger" @click="handleTest()">测试</el-button> -->
               </template>
             </el-table-column>
             <el-table-column prop="W_GZXMC" label="工资项" align="center"></el-table-column>
@@ -115,97 +114,49 @@
         </div>
       </el-card>
     </div>
-    <!-- <el-dialog width="30%" :visible.sync="dialogVisible" :title="dialogTitle">
-      <el-form :model="form" :rules="rules" ref="gzxxForm">
-        <el-form-item label="工资项名称" label-width='150px' prop='W_GZXBH'>
-          <el-select v-model="form.W_GZXBH">
-            <el-option v-for="(item,index) in optionsOfGZX" :value="item.W_GZXBH" :label="item.W_GZXMC" :key="index" style="font-size:12px"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="工资发送方单位" label-width='150px' prop='W_GZXFSFDWBH'>
-          <el-select v-model="form.W_GZXFSFDWBH">
-            <el-option v-for="(item,index) in optionsOfDWXX" :value="item.DWBH" :label="item.DWQC" :key="index" style="font-size:12px"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="工资项金额" label-width='150px' prop='W_GZXJE'>
-          <el-input v-model="form.W_GZXJE" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="工资所属项目编号" label-width='150px' prop='W_GZXSSXMBH'>
-          <el-input v-model="form.W_GZXSSXMBH" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="备注" label-width='150px' prop='W_BZ'>
-          <el-input v-model="form.W_BZ" auto-complete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false" size="mini">取 消</el-button>
-        <el-button type="primary" size="mini" @click="submitForm('gzxxForm')">确 定</el-button>
-      </div>
-    </el-dialog> -->
-    <!-- <dialog-form :isShow='renDialogShow'></dialog-form> -->
-    <tjgzx :isShow='dialogVisible' :dialogTitle='dialogTitle' :editOrAdd='editOrAdd' :gzmbmc='gzmbmc' @changeDialogStatus='changeDialogStatus'></tjgzx>
-    <!-- <tjgzx v-model='dialogVisible' :dialogTitle='dialogTitle' :editOrAdd='editOrAdd' :gzmbmc='gzmbmc' @changeDialogStatus='changeDialogStatus'></tjgzx> -->
+    <!-- 添加工资项对话框 -->
+    <edit-salary-option 
+      :dialogVisible='dialogVisible' 
+      :dialogTitle='dialogTitle' 
+      :staffCode='staffCode'
+      :searchFiled='searchFiled' 
+      :editOrAdd='editOrAdd'
+      :rowData='rowData' 
+      :gzmbmc='gzmbmc' 
+      @changeDialogStatus='changeDialogStatus'
+    ></edit-salary-option>
   </div>
 </template>
 
 <script>
-import Tjgzx from "./dialogForm/tjgzx";
+import EditSalaryOption from "./dialogForm/editSalaryOption";
 
 export default {
   props: ["staffCode", "searchFiledDetailPage"],
   data() {
     return {
-      // renDialogShow: false,   // 测试用对话框默认状态
-      isShow: false,
-      editOrAdd: "",
+      /* 此页面所用数据 */
+      // 检索工资表字段
       searchFiled: {
-        // 检索工资表字段
-        strYGBH: 0,
-        m_ID: 0,
+        strYGBH: "",
+        m_ID: "",
         strND: "",
-        yf: 0
+        yf: ""
       },
       gzmbmc: "", // 所属工资模板
       staffInfo: {}, // 员工信息
       tableData: [], // 工资项表格
       gzzj: 0, // 工资总和
-      dialogVisible: false, // 添加工资项对话框状态
+
+      /* 以下为传递给子组件的数据 */
+      dialogVisible: false, // 编辑工资项对话框状态
       dialogTitle: "", // 编辑工资项对话框标题
-      // optionsOfGZX: [], // 工资项下拉列表数据
-      // optionsOfDWXX: [], // 发送单位下拉列表数据
-      // 添加工资项提交字段
-      // form: {
-      //   W_GZXBH: "",
-      //   W_GZXFSFDWBH: "",
-      //   W_GZXJE: "",
-      //   W_GZXSSXMBH: "",
-      //   W_BZ: "",
-      //   // 以下为隐藏字段
-      //   S_ID: "",
-      //   W_ID: "",
-      //   W_ND: "",
-      //   W_YF: ""
-      // },
-      // rules: {
-      //   // 表单字段验证规则
-      //   W_GZXBH: [
-      //     { required: true, message: "请选择工资项", trigger: "change" }
-      //   ],
-      //   W_GZXFSFDWBH: [
-      //     { required: true, message: "请选择发送方单位", trigger: "change" }
-      //   ],
-      //   W_GZXJE: [
-      //     { required: true, message: "请填写工资金额", trigger: "blur" }
-      //   ],
-      //   W_GZXSSXMBH: [
-      //     { required: true, message: "请填写工资所属项目编号", trigger: "blur" }
-      //   ]
-      // }
+      editOrAdd: "", // 新增/编辑表单
+      rowData: {} // 选中编辑行的数据
     };
   },
   components: {
-    // DialogForm,
-    Tjgzx
+    EditSalaryOption
   },
   watch: {
     // 监听父组件检索框变化
@@ -225,10 +176,6 @@ export default {
     }
   },
   methods: {
-    // 子组件改变对话框状态
-    changeDialogStatus(dialogStatus) {
-      this.dialogVisible = dialogStatus;
-    },
     // 获取员工当月信息
     getStaffInfo() {
       let vueThis = this;
@@ -283,87 +230,27 @@ export default {
         }
       );
     },
-    // 编辑工资项
-    handleEdit(index, row) {
-      this.dialogVisible = true;
-      this.dialogTitle = "编辑工资项";
-      this.editOrAdd = "edit";
-      // 获取下拉列表
-      // if (this.optionsOfGZX.length == 0) {
-      //   this.getOptionsOfGZX();
-      //   this.getOptionsOfDWXX();
-      // }
-      // // 给表单赋默认值
-      // for (var key in row) {
-      //   this.form[key] = row[key];
-      // }
-    },
-    // 添加工资项
+    // 打开添加工资项对话框
     handleAdd() {
       this.dialogVisible = true;
       this.dialogTitle = "添加工资项";
       this.editOrAdd = "add";
-      // 重置表单
-      // this.resetForm('gzxxForm');
-      // for (var key in this,form) {
-      //   this.form[key] = ''
-      // }
-      // 获取下拉列表
-      // if (this.optionsOfGZX.length == 0) {
-      //   this.getOptionsOfGZX();
-      //   this.getOptionsOfDWXX();
-      // }
-      // 给隐藏字段赋值
-      // this.form.S_ID = this.searchFiled.strYGBH;
-      // this.form.W_ID = 0;
-      // this.form.W_ND = this.searchFiled.strND;
-      // this.form.W_YF = this.searchFiled.yf;
     },
-    // 获取工资项下拉列表数据
-    getOptionsOfGZX() {
-      let vueThis = this;
-      vueThis.$get(
-        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllGZX_ByGZMBLX",
-        { strGZMBMC: vueThis.gzmbmc },
-        data => {
-          vueThis.optionsOfGZX = data;
-        }
-      );
-    },
-    // 获取单位下拉列表数据
-    getOptionsOfDWXX() {
-      let vueThis = this;
-      vueThis.$get(
-        "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/Get_All_DWXX",
-        { yhbh: vueThis.$store.state.yhbh },
-        data => {
-          vueThis.optionsOfDWXX = data;
-        }
-      );
-    },
-    // 提交工资项字段
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          let vueThis = this;
-          vueThis.$post(
-            "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/AddANewGZB",
-            vueThis.form,
-            data => {
-              vueThis.dialogVisible = false;
-              vueThis.getSalaryInfo();
-            }
-          );
-        } else {
-          return false;
-        }
-      });
-    },
-    // 重置表单
-    resetForm(formName) {
-      if (this.$refs[formName] !== undefined) {
-        this.$refs[formName].resetFields();
+    // 打开编辑工资项对话框
+    handleEdit(index, row) {
+      this.dialogVisible = true;
+      this.dialogTitle = "编辑工资项";
+      this.editOrAdd = "edit";
+      // 给表单赋默认值
+      for (var key in row) {
+        this.rowData[key] = row[key];
       }
+    },
+    // 子组件改变对话框状态
+    changeDialogStatus(dialogStatus) {
+      this.dialogVisible = dialogStatus;
+      this.editOrAdd = "";
+      this.getSalaryInfo();
     }
   },
   created() {
