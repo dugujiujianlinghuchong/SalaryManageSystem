@@ -92,7 +92,6 @@
 
 <script>
 import HomePage from "./components/homePage";
-import HomePage_dialog from "./components/homePage_dialog";
 import PersonalSalary from "./components/personalSalary";
 import StaffManage from "./components/staffManage";
 import UserManage from "./components/userManage";
@@ -135,7 +134,6 @@ export default {
   components: {
     HomePage,
     PersonalSalary,
-    HomePage_dialog,
     StaffManage,
     UserManage
   },

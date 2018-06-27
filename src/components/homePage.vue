@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import HomePage_dialog from "./homePage_dialog";
 import HomePageDetail from "./homePage_detail";
 import Gzcxnd from "./searchInputs/gzcxnd";
 import Yf from "./searchInputs/yf";
@@ -64,7 +63,6 @@ export default {
     };
   },
   components: {
-    HomePage_dialog,
     HomePageDetail,
     Gzcxnd,
     Yf,

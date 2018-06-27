@@ -104,7 +104,6 @@ export default {
         S_icbcno: "",
         S_mbno: "",
         BZ: "",
-        TEST: "",
         // 以下为隐藏字段
         S_ID: "",
         S_YGBH: ""
@@ -149,8 +148,8 @@ export default {
           this.form[key] = "";
         }
         // 给隐藏字段赋值
-        this.form.S_ID = this.searchFiled.strYGBH;
-        this.form.S_YGBH = this.searchFiled.strND;
+        this.form.S_ID = 0;
+        this.form.S_YGBH = "";
       } else {
         // 给表单赋默认值
         for (var key in this.rowData) {
