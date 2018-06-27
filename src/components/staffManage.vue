@@ -12,6 +12,7 @@
             <zc-qb :zc='searchField.zc' @changeZC='changeZC'></zc-qb>
             <zw-qb :zw='searchField.zw' @changeZW='changeZW'></zw-qb>
             <sfbzcy-qb :sfbzcy='searchField.sfbzcy' @changeSFBZCY='changeSFBZCY'></sfbzcy-qb>
+            <el-button size='mini' type="primary" @click="handleAdd">添加</el-button>
           </el-form>
         </el-header>
         <!-- 工具栏 end -->
@@ -22,7 +23,7 @@
             <el-table-column label="操作" align="center" width="200">
               <template slot-scope="scope">
                 <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">管理历史信息</el-button>
+                <!-- <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">管理历史信息</el-button> -->
               </template>
             </el-table-column>
             <el-table-column prop="S_XM" label="姓名" align="center"></el-table-column>
@@ -49,10 +50,17 @@
           </el-pagination>
         </el-main>
         <!-- 展示内容 end -->
+
+        <!-- 编辑表格数据对话框 -->
+        <edit-staff-info 
+          :dialogVisible='dialogVisible' 
+          :dialogTitle='dialogTitle' 
+          :editOrAdd='editOrAdd'
+          :rowData='rowData' 
+          @changeDialogStatus='changeDialogStatus'
+        ></edit-staff-info >
       </div>
     </el-container>
-
-    <!-- <home-page_dialog :dialogVisible='dialogVisible' @close='closeDialog'></home-page_dialog> -->
   </div>
 </template>
 
@@ -64,14 +72,14 @@ import GzmbQb from "./searchInputs/gzmb_qb";
 import ZcQb from "./searchInputs/zc_qb";
 import ZwQb from "./searchInputs/zw_qb";
 import SfbzcyQb from "./searchInputs/sfbzcy_qb";
+import EditStaffInfo from "./dialogForm/editStaffInfo";
 
 export default {
   data() {
     return {
-      yhbh: "",
+      /* 以下为此页面所用数据 */
       detailPage: false,
-      tableData: [],
-      totalRows: 0,
+      // 检索表格字段
       searchField: {
         yhbh: "",
         keword: "",
@@ -83,7 +91,15 @@ export default {
         sfbzcy: "",
         page: 1,
         rows: 10
-      }
+      },
+      tableData: [], // 表格数据
+      totalRows: 0, //数据总条数
+
+      /* 以下为传递给子组件的数据 */
+      dialogVisible: false, // 编辑表格对话框状态
+      dialogTitle: "", // 编辑表格对话框标题
+      editOrAdd: "", // 新增/编辑表单
+      rowData: {} // 选中编辑行的数据
     };
   },
   components: {
@@ -93,11 +109,11 @@ export default {
     GzmbQb,
     ZcQb,
     ZwQb,
-    SfbzcyQb
+    SfbzcyQb,
+    EditStaffInfo
   },
   watch: {
     searchField: {
-      //深度监听，可监听到对象、数组的变化
       handler(newVal, oldVal) {
         if (
           newVal.szbm != "" &&
@@ -107,7 +123,7 @@ export default {
           newVal.zw != "" &&
           newVal.sfbzcy != ""
         ) {
-          this.getAllStaffInfo();
+          this.getTableData();
         }
       },
       deep: true
@@ -123,14 +139,7 @@ export default {
     }
   },
   methods: {
-    // 改变页码
-    handleCurrentChange(val) {
-      this.searchField.page = val;
-    },
-    // 改变页面显示行数
-    handleSizeChange(val) {
-      this.searchField.rows = val;
-    },
+    // 以下为监听子组件检索框状态
     changeKeywords(keyword) {
       this.searchField.keword = keyword;
       this.searchField.page = 1;
@@ -159,8 +168,16 @@ export default {
       this.searchField.sfbzcy = sfbzcy;
       this.searchField.page = 1;
     },
-    // 获取员工信息
-    getAllStaffInfo() {
+    // 改变页码
+    handleCurrentChange(val) {
+      this.searchField.page = val;
+    },
+    // 改变页面显示行数
+    handleSizeChange(val) {
+      this.searchField.rows = val;
+    },
+    // 获取表格信息
+    getTableData() {
       let vueThis = this;
       vueThis.$get(
         "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetMemberList_FY",
@@ -171,16 +188,31 @@ export default {
         }
       );
     },
-    // 编辑行
+    // 打开新增表格行对话框
+    handleAdd() {
+      this.dialogVisible = true;
+      this.dialogTitle = "添加员工";
+      this.editOrAdd = "add";
+    },
+    // 打开编辑表格行对话框
     handleEdit(index, row) {
-      console.log(index);
-      console.log(row);
-      
+      this.dialogVisible = true;
+      this.dialogTitle = "编辑员工";
+      this.editOrAdd = "edit";
+      // 给表单赋默认值
+      for (var key in row) {
+        this.rowData[key] = row[key];
+      }
+    },
+    // 监听子组件对话框状态
+    changeDialogStatus(dialogStatus) {
+      this.dialogVisible = dialogStatus;
+      this.editOrAdd = "";
+      this.getTableData();
     }
   },
   created() {
-    this.yhbh = this.$store.state.yhbh;
-    this.searchField.yhbh = this.yhbh;
+    this.searchField.yhbh = this.$store.state.yhbh;
   }
 };
 </script>

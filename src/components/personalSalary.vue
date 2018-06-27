@@ -28,6 +28,7 @@ import Yf from "./searchInputs/yf";
 export default {
   data() {
     return {
+      // 检索图表字段
       searchField: {
         strND: "",
         yf: "",
@@ -41,7 +42,6 @@ export default {
   },
   watch: {
     searchField: {
-      //深度监听，可监听到对象、数组的变化
       handler(newVal, oldVal) {
         if (newVal.strND != "" && newVal.yf != "") {
           this.drawBar();
@@ -51,6 +51,7 @@ export default {
     }
   },
   methods: {
+    // 以下为监听子组件检索框状态
     changeND(nd) {
       this.searchField.strND = nd;
     },

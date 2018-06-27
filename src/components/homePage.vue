@@ -33,7 +33,6 @@
         <!-- 展示内容 end -->
       </div>
     </el-container>
-    <!-- <home-page_dialog :dialogVisible='dialogVisible' @close='closeDialog'></home-page_dialog> -->
   </div>
 </template>
 
@@ -48,18 +47,20 @@ import Gzmb from "./searchInputs/gzmb";
 export default {
   data() {
     return {
-      yhbh: "",
-      staffCode: '',
-      dialogVisible: false,
-      detailPage: false,
+      /* 以下为此页面所用数据 */
+      // 检索表格字段
       searchField: {
         strND: "",
         intMonth: "",
         bmbh: "",
         gzmbmc: ""
       },
-      tableHead: [],
-      tableData: []
+      tableHead: [], // 表格标题
+      tableData: [], // 表格数据
+      detailPage: false, // 详情页状态
+
+      /* 以下为传递给子组件的数据 */
+      staffCode: '', // 员工编号
     };
   },
   components: {
@@ -72,7 +73,6 @@ export default {
   },
   watch: {
     searchField: {
-      //深度监听，可监听到对象、数组的变化
       handler(newVal, oldVal) {
         if (
           newVal.strND != "" &&
@@ -80,7 +80,7 @@ export default {
           newVal.bmbh != "" &&
           newVal.gzmbmc != ""
         ) {
-          this.getAllMemberSalary();
+          this.getTableData();
         }
       },
       deep: true
@@ -96,13 +96,7 @@ export default {
     }
   },
   methods: {
-    goToDetailPage(label, row) {
-      if (label == "姓名") this.detailPage = true;
-      this.staffCode = row.S_YGBH
-    },
-    closeDialog(dialogVisible) {
-      this.dialogVisible = dialogVisible;
-    },
+    // 以下为监听子组件检索框状态
     changeND(nd) {
       this.searchField.strND = nd;
     },
@@ -115,8 +109,8 @@ export default {
     changeGZMB(gzmb) {
       this.searchField.gzmbmc = gzmb;
     },
-    // 获取员工工资信息
-    getAllMemberSalary() {
+    // 获取表格信息
+    getTableData() {
       let vueThis = this;
       vueThis.tableHead = [];
       vueThis.tableData = [];
@@ -158,7 +152,7 @@ export default {
           });
         }
       );
-      // 获取工资数据
+      // 获取表格数据
       vueThis.$get(
         "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllMember_GZB_ByBMBH",
         vueThis.searchField,
@@ -173,10 +167,12 @@ export default {
           });
         }
       );
+    },
+    // 跳转至详情页
+    goToDetailPage(label, row) {
+      if (label == "姓名") this.detailPage = true;
+      this.staffCode = row.S_YGBH
     }
-  },
-  created() {
-    this.yhbh = this.$store.state.yhbh;
   }
 };
 </script>

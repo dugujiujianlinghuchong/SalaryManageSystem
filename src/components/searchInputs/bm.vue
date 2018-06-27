@@ -13,7 +13,6 @@ export default {
   props: ["bmbh"],
   data() {
     return {
-      yhbh: "",
       input_value: this.bmbh,
       optionsOfSelector: []
     };
@@ -28,7 +27,7 @@ export default {
       let vueThis = this;
       vueThis.$get(
         "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/Get_All_DWXX",
-        { yhbh: vueThis.yhbh },
+        { yhbh: vueThis.$store.state.yhbh },
         data => {
           vueThis.optionsOfSelector = data;
           vueThis.input_value = vueThis.optionsOfSelector[0].DWBH;
@@ -40,7 +39,6 @@ export default {
     }
   },
   created() {
-    this.yhbh = this.$store.state.yhbh
     this.getOptionList();
   }
 };

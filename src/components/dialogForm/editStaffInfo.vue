@@ -10,7 +10,7 @@
         >
             <el-form :model="form" :rules="rules" ref="fieldForm">
                 <el-form-item label="姓名" label-width='150px' prop='S_XM'>
-                    <el-input v-model="form.S_XM" auto-complete="off"></el-input>
+                    <el-input v-model="form.S_XM" auto-complete="off" style="width:215px"></el-input>
                 </el-form-item>
                 <el-form-item label="性别" label-width='150px' prop='S_XB'>
                     <el-select v-model="form.S_XB">
@@ -20,27 +20,27 @@
                 </el-form-item>
                 <el-form-item label="职务" label-width='150px' prop='S_ZW'>
                     <el-select v-model="form.S_ZW">
-                        <!-- <el-option v-for="(item,index) in optionsOfSelector_1" :value="item.W_GZXBH" :label="item.W_GZXMC" :key="index" style="font-size:12px"></el-option> -->
+                        <el-option v-for="(item,index) in optionsOfSelector_1" :value="item.MC" :label="item.MC" :key="index" style="font-size:12px"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="职称" label-width='150px' prop='S_ZC'>
                     <el-select v-model="form.S_ZC">
-                        <!-- <el-option v-for="(item,index) in optionsOfSelector_2" :value="item.W_GZXBH" :label="item.W_GZXMC" :key="index" style="font-size:12px"></el-option> -->
+                        <el-option v-for="(item,index) in optionsOfSelector_2" :value="item.MC" :label="item.MC" :key="index" style="font-size:12px"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="所在部门" label-width='150px' prop='S_SZBMBH'>
                     <el-select v-model="form.S_SZBMBH">
-                        <!-- <el-option v-for="(item,index) in optionsOfSelector_3" :value="item.W_GZXBH" :label="item.W_GZXMC" :key="index" style="font-size:12px"></el-option> -->
+                        <el-option v-for="(item,index) in optionsOfSelector_3" :value="item.DWBH" :label="item.DWQC" :key="index" style="font-size:12px"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="编制情况" label-width='150px' prop='S_BZQK'>
                     <el-select v-model="form.S_BZQK">
-                        <!-- <el-option v-for="(item,index) in optionsOfSelector_4" :value="item.W_GZXBH" :label="item.W_GZXMC" :key="index" style="font-size:12px"></el-option> -->
+                        <el-option v-for="(item,index) in optionsOfSelector_4" :value="item.MC" :label="item.MC" :key="index" style="font-size:12px"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="工资模板名称" label-width='150px' prop='S_GZMBMC'>
                     <el-select v-model="form.S_GZMBMC">
-                        <!-- <el-option v-for="(item,index) in optionsOfSelector_5" :value="item.W_GZXBH" :label="item.W_GZXMC" :key="index" style="font-size:12px"></el-option> -->
+                        <el-option v-for="(item,index) in optionsOfSelector_5" :value="item.MC" :label="item.MC" :key="index" style="font-size:12px"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="是否班子成员" label-width='150px' prop='S_SFBZCY'>
@@ -50,7 +50,8 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="入职时间" label-width='150px' prop='S_CJGZSJ'>
-                    <el-date-picker v-model="form.S_CJGZSJ" type="date" placeholder="选择日期"></el-date-picker>
+                    <el-date-picker v-model="form.S_CJGZSJ" placeholder="选择日期" :editable='false' :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                    <!-- <el-input v-model="form.S_CJGZSJ" auto-complete="off"></el-input> -->
                 </el-form-item>
                 <el-form-item label="建行卡号" label-width='150px' prop='S_ccbno'>
                     <el-input v-model="form.S_ccbno" auto-complete="off"></el-input>
@@ -78,11 +79,8 @@ export default {
   props: [
     "dialogVisible",
     "dialogTitle",
-    "staffCode",
-    "searchFiled",
     "editOrAdd",
     "rowData",
-    "gzmbmc"
   ],
   data() {
     return {
@@ -106,6 +104,7 @@ export default {
         S_icbcno: "",
         S_mbno: "",
         BZ: "",
+        TEST: "",
         // 以下为隐藏字段
         S_ID: "",
         S_YGBH: ""
@@ -151,12 +150,12 @@ export default {
         }
         // 给隐藏字段赋值
         this.form.S_ID = this.searchFiled.strYGBH;
-        this.form.W_ND = this.searchFiled.strND;
-        this.form.W_YF = this.searchFiled.yf;
-        this.form.W_ID = 0;
+        this.form.S_YGBH = this.searchFiled.strND;
       } else {
         // 给表单赋默认值
-        this.form = this.rowData;
+        for (var key in this.rowData) {
+          this.form[key] = this.rowData[key];
+        }
       }
     }
   },
@@ -165,8 +164,8 @@ export default {
     getOptionsOfSelector_1() {
       let vueThis = this;
       vueThis.$get(
-        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllGZX_ByGZMBLX",
-        { strGZMBMC: vueThis.gzmbmc },
+        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllZWB",
+        { yhbh: vueThis.$store.state.yhbh },
         data => {
           vueThis.optionsOfSelector_1 = data;
         }
@@ -176,7 +175,7 @@ export default {
     getOptionsOfSelector_2() {
       let vueThis = this;
       vueThis.$get(
-        "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/Get_All_DWXX",
+        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllZCB",
         { yhbh: vueThis.$store.state.yhbh },
         data => {
           vueThis.optionsOfSelector_2 = data;
@@ -198,7 +197,7 @@ export default {
     getOptionsOfSelector_4() {
       let vueThis = this;
       vueThis.$get(
-        "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/Get_All_DWXX",
+        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllBZLX",
         { yhbh: vueThis.$store.state.yhbh },
         data => {
           vueThis.optionsOfSelector_4 = data;
@@ -209,7 +208,7 @@ export default {
     getOptionsOfSelector_5() {
       let vueThis = this;
       vueThis.$get(
-        "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/Get_All_DWXX",
+        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllGZMB",
         { yhbh: vueThis.$store.state.yhbh },
         data => {
           vueThis.optionsOfSelector_5 = data;
@@ -222,7 +221,7 @@ export default {
         if (valid) {
           let vueThis = this;
           vueThis.$post(
-            "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/AddANewGZB",
+            "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/UpdateAMember",
             vueThis.form,
             data => {
               vueThis.$emit("changeDialogStatus", false);
@@ -249,6 +248,9 @@ export default {
     // 获取下拉列表
     this.getOptionsOfSelector_1();
     this.getOptionsOfSelector_2();
+    this.getOptionsOfSelector_3();
+    this.getOptionsOfSelector_4();
+    this.getOptionsOfSelector_5();
   }
 };
 </script>

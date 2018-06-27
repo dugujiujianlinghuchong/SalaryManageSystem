@@ -13,7 +13,6 @@ export default {
   props: ["bzqk"],
   data() {
     return {
-      yhbh: "",
       input_value: this.bzqk,
       optionsOfSelector: []
     };
@@ -28,7 +27,7 @@ export default {
       let vueThis = this;
       vueThis.$get(
         "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllBZLX_QB",
-        { yhbh: vueThis.yhbh },
+        { yhbh: vueThis.$store.state.yhbh },
         data => {
           vueThis.optionsOfSelector = data;
           vueThis.input_value = vueThis.optionsOfSelector[0].MC;
@@ -40,7 +39,6 @@ export default {
     }
   },
   created() {
-    this.yhbh = this.$store.state.yhbh
     this.getOptionList();
   }
 };

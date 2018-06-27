@@ -114,7 +114,7 @@
         </div>
       </el-card>
     </div>
-    <!-- 添加工资项对话框 -->
+    <!-- 编辑表格数据对话框 -->
     <edit-salary-option 
       :dialogVisible='dialogVisible' 
       :dialogTitle='dialogTitle' 
@@ -135,22 +135,22 @@ export default {
   props: ["staffCode", "searchFiledDetailPage"],
   data() {
     return {
-      /* 此页面所用数据 */
-      // 检索工资表字段
+      /* 以下为此页面所用数据 */
+      // 检索表格字段
       searchFiled: {
         strYGBH: "",
         m_ID: "",
         strND: "",
         yf: ""
       },
-      gzmbmc: "", // 所属工资模板
+      tableData: [], // 表格数据
       staffInfo: {}, // 员工信息
-      tableData: [], // 工资项表格
+      gzmbmc: "", // 所属工资模板
       gzzj: 0, // 工资总和
 
       /* 以下为传递给子组件的数据 */
-      dialogVisible: false, // 编辑工资项对话框状态
-      dialogTitle: "", // 编辑工资项对话框标题
+      dialogVisible: false, // 编辑表格对话框状态
+      dialogTitle: "", // 编辑表格对话框标题
       editOrAdd: "", // 新增/编辑表单
       rowData: {} // 选中编辑行的数据
     };
@@ -170,7 +170,7 @@ export default {
     searchFiled: {
       handler(newVal, oldVal) {
         this.getStaffInfo();
-        this.getSalaryInfo();
+        this.getTableData();
       },
       deep: true
     }
@@ -189,8 +189,8 @@ export default {
         }
       );
     },
-    // 获取员工当月工资信息
-    getSalaryInfo() {
+    // 获取表格信息
+    getTableData() {
       let vueThis = this;
       // get方法内部无法直接获取searchFiled?????
       let params = vueThis.searchFiled;
@@ -213,7 +213,7 @@ export default {
         }
       );
     },
-    // 删除工资项
+    // 删除表格行
     handleDelete(index, row) {
       let vueThis = this;
       vueThis.$get(
@@ -225,18 +225,18 @@ export default {
               confirmButtonText: "确定"
             });
           } else {
-            vueThis.getSalaryInfo();
+            vueThis.getTableData();
           }
         }
       );
     },
-    // 打开添加工资项对话框
+    // 打开新增表格行对话框
     handleAdd() {
       this.dialogVisible = true;
       this.dialogTitle = "添加工资项";
       this.editOrAdd = "add";
     },
-    // 打开编辑工资项对话框
+    // 打开编辑表格行对话框
     handleEdit(index, row) {
       this.dialogVisible = true;
       this.dialogTitle = "编辑工资项";
@@ -246,11 +246,11 @@ export default {
         this.rowData[key] = row[key];
       }
     },
-    // 子组件改变对话框状态
+    // 监听子组件对话框状态
     changeDialogStatus(dialogStatus) {
       this.dialogVisible = dialogStatus;
       this.editOrAdd = "";
-      this.getSalaryInfo();
+      this.getTableData();
     }
   },
   created() {

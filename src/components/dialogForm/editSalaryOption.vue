@@ -96,7 +96,9 @@ export default {
         this.form.W_ID = 0;
       } else {
         // 给表单赋默认值
-        this.form = this.rowData;
+        for (var key in this.rowData) {
+          this.form[key] = this.rowData[key];
+        }
       }
     }
   },
