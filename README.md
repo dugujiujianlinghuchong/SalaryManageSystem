@@ -1,2 +1,2 @@
 # SalaryManageSystem
-# 用GitHub装逼很爽的
+# 从搭建到放弃
