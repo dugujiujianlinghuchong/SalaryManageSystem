@@ -20,7 +20,7 @@
         <!-- 展示内容 -->
         <el-main  v-if="!detailPage">
           <el-table :data="tableData" :max-height="tableHeigt" size='small' stripe border>
-            <el-table-column label="操作" align="center" width="200">
+            <el-table-column label="操作" align="center">
               <template slot-scope="scope">
                 <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                 <!-- <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">管理历史信息</el-button> -->

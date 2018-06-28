@@ -68,7 +68,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="closeDialog" size="mini">取 消</el-button>
-                <el-button type="primary" size="mini" @click="submitForm('fieldForm')">确 定</el-button>
+                <el-button type="primary" size="mini" @click="submitForm()">确 定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -137,7 +137,8 @@ export default {
         S_CJGZSJ: [
           { required: true, message: "请填写参加工作时间", trigger: "blur" }
         ]
-      }
+      },
+      requestAddress: '' // 调用的后台方法
     };
   },
   watch: {
@@ -150,11 +151,15 @@ export default {
         // 给隐藏字段赋值
         this.form.S_ID = 0;
         this.form.S_YGBH = "";
+        // 调用的后台方法
+        this.requestAddress = "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/AddANewMember"
       } else {
         // 给表单赋默认值
         for (var key in this.rowData) {
           this.form[key] = this.rowData[key];
         }
+        // 调用的后台方法
+        this.requestAddress = "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/UpdateAMember"
       }
     }
   },
@@ -215,21 +220,22 @@ export default {
       );
     },
     // 提交字段
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          let vueThis = this;
-          vueThis.$post(
-            "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/UpdateAMember",
-            vueThis.form,
-            data => {
-              vueThis.$emit("changeDialogStatus", false);
-            }
-          );
-        } else {
-          return false;
-        }
-      });
+    submitForm() {
+      this.submitDialoForm(this.requestAddress, this.form);
+      // this.$refs[formName].validate(valid => {
+      //   if (valid) {
+      //     let vueThis = this;
+      //     vueThis.$post(
+      //       "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/" + vueThis.requestAddress,
+      //       vueThis.form,
+      //       data => {
+      //         vueThis.$emit("changeDialogStatus", false);
+      //       }
+      //     );
+      //   } else {
+      //     return false;
+      //   }
+      // });
     },
     // 重置表单
     resetForm(formName) {
