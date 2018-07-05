@@ -109,14 +109,13 @@ export default {
     },
     // 获取表格信息
     getTableData() {
-      let vueThis = this;
-      vueThis.tableHead = [];
-      vueThis.tableData = [];
+      this.tableHead = [];
+      this.tableData = [];
 
       // 获取表头信息
-      vueThis.$get(
+      this.$get(
         "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllGZX_ByGZMBLX",
-        { strGZMBMC: vueThis.searchField.gzmbmc },
+        { strGZMBMC: this.searchField.gzmbmc },
         data => {
           var tableHead = [];
           data.forEach(element => {
@@ -127,23 +126,23 @@ export default {
             obj["fixed"] = false;
             tableHead.push(obj);
           });
-          vueThis.tableHead = tableHead;
-          vueThis.tableHead.unshift({
+          this.tableHead = tableHead;
+          this.tableHead.unshift({
             prop: "S_GZHJ",
             label: "工资总计",
             fixed: true
           });
-          vueThis.tableHead.unshift({
+          this.tableHead.unshift({
             prop: "D_BMMC",
             label: "部门名称",
             fixed: false
           });
-          vueThis.tableHead.unshift({
+          this.tableHead.unshift({
             prop: "S_YGBH",
             label: "员工编号",
             fixed: false
           });
-          vueThis.tableHead.unshift({
+          this.tableHead.unshift({
             prop: "S_XM",
             label: "姓名",
             fixed: true
@@ -151,17 +150,16 @@ export default {
         }
       );
       // 获取表格数据
-      vueThis.$get(
+      this.$get(
         "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllMember_GZB_ByBMBH",
-        vueThis.searchField,
+        this.searchField,
         data => {
-          data.forEach(function(item, index) {
-            // console.log(item);
-            var obj = {};
-            item.forEach(function(innerItem) {
+          data.forEach((item, index) => {
+            let obj = {};
+            item.forEach(innerItem => {
               obj[innerItem.Key] = innerItem.Value;
             });
-            vueThis.tableData.push(obj);
+            this.tableData.push(obj);
           });
         }
       );

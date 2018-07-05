@@ -126,10 +126,9 @@ export default {
       });
 
       //填充数据到柱状图
-      let vueThis = this;
-      vueThis.$get(
+      this.$get(
         "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAMemberGZB_View",
-        vueThis.searchField,
+        this.searchField,
         data => {
           var echartData = data;
           var gzzj = 0,

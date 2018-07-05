@@ -24,13 +24,12 @@ export default {
   },
   methods: {
     getOptionList() {
-      let vueThis = this;
-      vueThis.$get(
+      this.$get(
         "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/Get_DWXX_All_QB",
-        { yhbh: vueThis.$store.state.yhbh },
+        { yhbh: this.$store.state.yhbh },
         data => {
-          vueThis.optionsOfSelector = data;
-          vueThis.input_value = vueThis.optionsOfSelector[0].DWQC;
+          this.optionsOfSelector = data;
+          this.input_value = this.optionsOfSelector[0].DWQC;
         }
       );
     },

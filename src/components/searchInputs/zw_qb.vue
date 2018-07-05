@@ -24,13 +24,12 @@ export default {
   },
   methods: {
     getOptionList() {
-      let vueThis = this;
-      vueThis.$get(
+      this.$get(
         "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllZWB_QB",
         {},
         data => {
-          vueThis.optionsOfSelector = data;
-          vueThis.input_value = vueThis.optionsOfSelector[0].MC;
+          this.optionsOfSelector = data;
+          this.input_value = this.optionsOfSelector[0].MC;
         }
       );
     },

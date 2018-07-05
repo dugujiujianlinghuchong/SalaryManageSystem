@@ -6,8 +6,7 @@
           :show-close="false" 
           :close-on-click-modal="false" 
           :close-on-press-escape="false"
-          width="30%"  
-        >
+          width="30%">
             <el-form :model="form" :rules="rules" ref="fieldForm">
                 <el-form-item label="工资项名称" label-width='150px' prop='W_GZXBH'>
                   <el-select v-model="form.W_GZXBH">
@@ -105,23 +104,21 @@ export default {
   methods: {
     // 获取工资项下拉列表数据
     getOptionsOfSelector_1() {
-      let vueThis = this;
-      vueThis.$get(
+      this.$get(
         "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllGZX_ByGZMBLX",
-        { strGZMBMC: vueThis.gzmbmc },
+        { strGZMBMC: this.gzmbmc },
         data => {
-          vueThis.optionsOfSelector_1 = data;
+          this.optionsOfSelector_1 = data;
         }
       );
     },
     // 获取单位下拉列表数据
     getOptionsOfSelector_2() {
-      let vueThis = this;
-      vueThis.$get(
+      this.$get(
         "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/Get_All_DWXX",
-        { yhbh: vueThis.$store.state.yhbh },
+        { yhbh: this.$store.state.yhbh },
         data => {
-          vueThis.optionsOfSelector_2 = data;
+          this.optionsOfSelector_2 = data;
         }
       );
     },
@@ -129,12 +126,11 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          let vueThis = this;
-          vueThis.$post(
+          this.$post(
             "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/AddANewGZB",
-            vueThis.form,
+            this.form,
             data => {
-              vueThis.$emit("changeDialogStatus", false);
+              this.$emit("changeDialogStatus", false);
             }
           );
         } else {

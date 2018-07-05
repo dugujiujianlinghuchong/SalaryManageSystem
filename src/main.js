@@ -13,9 +13,8 @@ import echarts from 'echarts'
 Vue.prototype.$echarts = echarts
 // 引入vuex配置
 import { store } from './utils/vuex'
-// 引入获取下拉列表方法
-import pubFunc from './utils/publicFunction'
-Vue.use(pubFunc)
+// 引入公共方法
+import './utils/publicFunction'
 
 Vue.use(ElementUI)
 

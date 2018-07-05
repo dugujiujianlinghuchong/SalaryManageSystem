@@ -166,56 +166,51 @@ export default {
   methods: {
     // 获取职务下拉列表数据
     getOptionsOfSelector_1() {
-      let vueThis = this;
-      vueThis.$get(
+      this.$get(
         "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllZWB",
-        { yhbh: vueThis.$store.state.yhbh },
+        { yhbh: this.$store.state.yhbh },
         data => {
-          vueThis.optionsOfSelector_1 = data;
+          this.optionsOfSelector_1 = data;
         }
       );
     },
     // 获取职称下拉列表数据
     getOptionsOfSelector_2() {
-      let vueThis = this;
-      vueThis.$get(
+      this.$get(
         "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllZCB",
-        { yhbh: vueThis.$store.state.yhbh },
+        { yhbh: this.$store.state.yhbh },
         data => {
-          vueThis.optionsOfSelector_2 = data;
+          this.optionsOfSelector_2 = data;
         }
       );
     },
     // 获取部门下拉列表数据
     getOptionsOfSelector_3() {
-      let vueThis = this;
-      vueThis.$get(
+      this.$get(
         "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/Get_All_DWXX",
-        { yhbh: vueThis.$store.state.yhbh },
+        { yhbh: this.$store.state.yhbh },
         data => {
-          vueThis.optionsOfSelector_3 = data;
+          this.optionsOfSelector_3 = data;
         }
       );
     },
     // 获取编制情况下拉列表数据
     getOptionsOfSelector_4() {
-      let vueThis = this;
-      vueThis.$get(
+      this.$get(
         "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllBZLX",
-        { yhbh: vueThis.$store.state.yhbh },
+        { yhbh: this.$store.state.yhbh },
         data => {
-          vueThis.optionsOfSelector_4 = data;
+          this.optionsOfSelector_4 = data;
         }
       );
     },
     // 获取工资模板下拉列表数据
     getOptionsOfSelector_5() {
-      let vueThis = this;
-      vueThis.$get(
+      this.$get(
         "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllGZMB",
-        { yhbh: vueThis.$store.state.yhbh },
+        { yhbh: this.$store.state.yhbh },
         data => {
-          vueThis.optionsOfSelector_5 = data;
+          this.optionsOfSelector_5 = data;
         }
       );
     },
@@ -224,12 +219,11 @@ export default {
       this.submitDialoForm(this.requestAddress, this.form);
       // this.$refs[formName].validate(valid => {
       //   if (valid) {
-      //     let vueThis = this;
-      //     vueThis.$post(
-      //       "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/" + vueThis.requestAddress,
-      //       vueThis.form,
+      //     this.$post(
+      //       "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/" + this.requestAddress,
+      //       this.form,
       //       data => {
-      //         vueThis.$emit("changeDialogStatus", false);
+      //         this.$emit("changeDialogStatus", false);
       //       }
       //     );
       //   } else {

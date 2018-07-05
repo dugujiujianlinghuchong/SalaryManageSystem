@@ -168,6 +168,17 @@ export default {
       this.searchField.sfbzcy = sfbzcy;
       this.searchField.page = 1;
     },
+    // 获取表格信息
+    getTableData() {
+      this.$get(
+        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetMemberList_FY",
+        this.searchField,
+        data => {
+          this.totalRows = data.total;
+          this.tableData = data.rows;
+        }
+      );
+    },
     // 改变页码
     handleCurrentChange(val) {
       this.searchField.page = val;
@@ -175,18 +186,6 @@ export default {
     // 改变页面显示行数
     handleSizeChange(val) {
       this.searchField.rows = val;
-    },
-    // 获取表格信息
-    getTableData() {
-      let vueThis = this;
-      vueThis.$get(
-        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetMemberList_FY",
-        vueThis.searchField,
-        data => {
-          vueThis.totalRows = data.total;
-          vueThis.tableData = data.rows;
-        }
-      );
     },
     // 打开新增表格行对话框
     handleAdd() {

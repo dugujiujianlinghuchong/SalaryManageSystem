@@ -178,54 +178,51 @@ export default {
   methods: {
     // 获取员工当月信息
     getStaffInfo() {
-      let vueThis = this;
       // get方法内部无法直接获取searchFiled?????
-      let params = vueThis.searchFiled;
-      vueThis.$get(
+      let params = this.searchFiled;
+      this.$get(
         "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAMemberInfoByLSXX",
         params,
         data => {
-          vueThis.staffInfo = data;
+          this.staffInfo = data;
         }
       );
     },
     // 获取表格信息
     getTableData() {
-      let vueThis = this;
       // get方法内部无法直接获取searchFiled?????
-      let params = vueThis.searchFiled;
+      let params = this.searchFiled;
       // 工资总计清0
-      vueThis.gzzj = 0;
-      vueThis.$get(
+      this.gzzj = 0;
+      this.$get(
         "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAMemberGZB_View",
         params,
         data => {
-          vueThis.tableData = data;
+          this.tableData = data;
           for (let i = 0; i < data.length; i++) {
             if (data[i].W_GZXMC == "应发小计") continue;
             if (data[i].W_SFKCX == "否") {
-              vueThis.gzzj += data[i].W_GZXJE;
+              this.gzzj += data[i].W_GZXJE;
             } else {
-              vueThis.gzzj -= data[i].W_GZXJE;
+              this.gzzj -= data[i].W_GZXJE;
             }
           }
-          vueThis.gzzj = vueThis.gzzj.toFixed(2);
+          this.gzzj = this.gzzj.toFixed(2);
         }
       );
     },
     // 删除表格行
     handleDelete(index, row) {
-      let vueThis = this;
-      vueThis.$get(
+      this.$get(
         "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/DeleteAGZB",
         { id: row.W_ID },
         data => {
           if (data != "true:") {
-            vueThis.$alert("删除失败！", "提示", {
+            this.$alert("删除失败！", "提示", {
               confirmButtonText: "确定"
             });
           } else {
-            vueThis.getTableData();
+            this.getTableData();
           }
         }
       );
