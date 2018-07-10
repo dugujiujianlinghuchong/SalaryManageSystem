@@ -34,20 +34,16 @@
       <!-- 左栏 -->
       <el-col id="left" :xs="7" :sm="6" :md="5" :lg="3" :xl="3">
         <div class="grid-content bg-purple" >
-            <!-- <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
-              <el-radio-button :label="false">展开</el-radio-button>
-              <el-radio-button :label="true">收起</el-radio-button>
-            </el-radio-group> -->
-            <el-menu :default-openeds="['1']">
+            <el-menu :default-openeds="opens">
               <el-submenu index="1">
                 <template slot="title"><i class="el-icon-info"></i>工资管理</template>
-                  <el-menu-item index="1-1" @click="addTab(editableTabsValue, '主页', 'HomePage', false)">主页</el-menu-item>
-                  <el-menu-item index="1-2" @click="addTab(editableTabsValue, '个人工资统计', 'PersonalSalary', true)">个人工资统计</el-menu-item>
+                  <el-menu-item index="1-1" @click="addTab(editableTabsValue, '主页', 'HomePage', false, '1')">主页</el-menu-item>
+                  <el-menu-item index="1-2" @click="addTab(editableTabsValue, '个人工资统计', 'PersonalSalary', true, '1')">个人工资统计</el-menu-item>
               </el-submenu>
               <el-submenu index="2">
                 <template slot="title"><i class="el-icon-setting"></i>系统设置</template>
-                  <el-menu-item index="2-1" @click="addTab(editableTabsValue, '员工管理', 'StaffManage', true)">员工管理</el-menu-item>
-                  <el-menu-item index="2-2" @click="addTab(editableTabsValue, '用户管理', 'UserManage', true)">用户管理</el-menu-item>
+                  <el-menu-item index="2-1" @click="addTab(editableTabsValue, '员工管理', 'StaffManage', true, '2')">员工管理</el-menu-item>
+                  <el-menu-item index="2-2" @click="addTab(editableTabsValue, '用户管理', 'UserManage', true, '2')">用户管理</el-menu-item>
               </el-submenu>
               <el-submenu index="3">
                 <template slot="title"><i class="el-icon-date"></i>系统日志</template>
@@ -72,7 +68,7 @@
     <!-- 登录页 -->
     <div v-else>
       <el-form ref="AccountFrom" :model="account" :rules="rules" label-position="left" label-width="0px" class="demo-ruleForm login-container">
-        <h3 class="title">管理员登录</h3>
+        <h3 class="title">用户登录</h3>
         <el-form-item prop="strUserName">
           <el-input type="text" v-model="account.strUserName" auto-complete="off" placeholder="账号"></el-input>
         </el-form-item>
@@ -116,6 +112,7 @@ export default {
         ]
       },
       checked: true,
+
       // 以下是主页数据
       yhbh: "",
       dlm: "",
@@ -125,10 +122,12 @@ export default {
           title: "主页",
           name: "0",
           content: "HomePage",
-          closable: false
+          closable: false,
+          parentIndex: "1"
         }
       ],
-      tabIndex: 0
+      tabIndex: 0,
+      opens: ["1"] // 展开的菜单栏
     };
   },
   components: {
@@ -136,6 +135,18 @@ export default {
     PersonalSalary,
     StaffManage,
     UserManage
+  },
+  watch: {
+    editableTabs: {
+      handler(newVal) {
+        let openTabs = []
+        newVal.forEach(item => {
+          openTabs.push(item.parentIndex);
+        })
+        this.opens = openTabs;
+      },
+      deep: true
+    }
   },
   methods: {
     handleLogin() {
@@ -159,7 +170,7 @@ export default {
         }
       );
     },
-    addTab(targetName, title, content, closable) {
+    addTab(targetName, title, content, closable, parentIndex) {
       for (var i = 0; i < this.editableTabs.length; i++) {
         if (this.editableTabs[i].title == title) {
           this.editableTabsValue = this.editableTabs[i].name;
@@ -172,7 +183,8 @@ export default {
         title: title,
         name: newTabName,
         content: content,
-        closable: closable
+        closable: closable,
+        parentIndex: parentIndex
       });
       this.editableTabsValue = newTabName;
     },

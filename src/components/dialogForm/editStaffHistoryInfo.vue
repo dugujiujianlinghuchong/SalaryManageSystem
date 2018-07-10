@@ -1,23 +1,14 @@
 <template>
     <div>
         <el-dialog 
-          :visible.sync="dialogVisible" 
-          :title="dialogTitle"
+          :visible.sync="dialog2Visible" 
+          :title="dialog2Title"
           :show-close="false" 
           :close-on-click-modal="false" 
           :close-on-press-escape="false"
           width="30%"  
         >
             <el-form :model="form" :rules="rules" ref="fieldForm">
-                <el-form-item label="姓名" label-width='150px' prop='S_XM'>
-                    <el-input v-model="form.S_XM" auto-complete="off" style="width:215px"></el-input>
-                </el-form-item>
-                <el-form-item label="性别" label-width='150px' prop='S_XB'>
-                    <el-select v-model="form.S_XB">
-                        <el-option value="男" label="男" style="font-size:12px"></el-option>
-                        <el-option value="女" label="女" style="font-size:12px"></el-option>
-                    </el-select>
-                </el-form-item>
                 <el-form-item label="职务" label-width='150px' prop='S_ZW'>
                     <el-select v-model="form.S_ZW">
                         <el-option v-for="(item,index) in optionsOfSelector_1" :value="item.MC" :label="item.MC" :key="index" style="font-size:12px"></el-option>
@@ -76,9 +67,9 @@
 <script>
 export default {
   props: [
-    "dialogVisible",
-    "dialogTitle",
-    "rowData",
+    "dialog2Visible",
+    "dialog2Title",
+    "rowDataDetailPage",
   ],
   data() {
     return {
@@ -89,8 +80,6 @@ export default {
       optionsOfSelector_5: [], // 工资模板下拉列表数据
       // 表单提交字段
       form: {
-        S_XM: "",
-        S_XB: "",
         S_ZW: "",
         S_ZC: "",
         S_SZBMBH: "",
@@ -108,12 +97,6 @@ export default {
       },
       // 表单字段验证规则
       rules: {
-        S_XM: [
-          { required: true, message: "请填写员工姓名", trigger: "blur" }
-        ],
-        S_XB: [
-          { required: true, message: "请选择性别", trigger: "change" }
-        ],
         S_ZW: [
           { required: true, message: "请选择职务", trigger: "change" }
         ],
@@ -141,25 +124,13 @@ export default {
   },
   watch: {
     // 判断新增/编辑
-    rowData(newVal) {
-      if (Object.keys(newVal).length == 0) {
-        // 重置表单
-        for (var key in this.form) {
-          this.form[key] = "";
-        }
-        // 给隐藏字段赋值
-        this.form.S_ID = 0;
-        this.form.S_YGBH = "";
-        // 调用的后台方法
-        this.requestAddress = "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/AddANewMember"
-      } else {
-        // 给表单赋默认值
-        for (var key in this.rowData) {
-          this.form[key] = this.rowData[key];
-        }
-        // 调用的后台方法
-        this.requestAddress = "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/UpdateAMember"
+    rowDataDetailPage(newVal) {
+      // 给表单赋默认值
+      for (var key in this.rowDataDetailPage) {
+        this.form[key] = this.rowDataDetailPage[key];
       }
+      // 调用的后台方法
+      this.requestAddress = "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/UpdateAYGXXYJLB"
     }
   },
   methods: {
@@ -220,13 +191,13 @@ export default {
         this.requestAddress,
         this.form,
         data => {
-          this.$emit("changeDialogStatus", false);
+          this.$emit("changeDialog2Status", false);
         }
       );
     },
     // 取消编辑
     closeDialog() {
-      this.$emit("changeDialogStatus", false);
+      this.$emit("changeDialog2Status", false);
       this.resetForm('fieldForm');
     }
   },
