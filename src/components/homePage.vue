@@ -20,7 +20,7 @@
           <el-table :data="tableData" :max-height="tableHeigt" size='small' stripe border>
             <el-table-column v-for="(item,index) in tableHead" :prop="item.prop" :label="item.label" :deduction="item.deduction" :key="index" width="180" align="center">
               <template slot-scope="scope">
-                <span @click="goToDetailPage(item.label,scope.row)" :class="{ increase: item.deduction == '否', reduce: item.deduction == '是', active: item.label == '姓名' }">{{ scope.row[item.prop] }}</span>
+                <span @click="goToDetailPage(item.label,scope.row)" :class="{ increase: item.deduction == '否', reduce: item.deduction == '是', active: item.label == '姓名' && scope.row.D_BMMC != '总计'}">{{ scope.row[item.prop] }}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -111,6 +111,7 @@ export default {
     getTableData() {
       this.tableHead = [];
       this.tableData = [];
+      let tableHeadAttr = {}; // 此列数据增减属性
 
       // 获取表头信息
       this.$get(
@@ -133,11 +134,6 @@ export default {
             fixed: true
           });
           this.tableHead.unshift({
-            prop: "D_BMMC",
-            label: "部门名称",
-            fixed: false
-          });
-          this.tableHead.unshift({
             prop: "S_YGBH",
             label: "员工编号",
             fixed: false
@@ -147,6 +143,14 @@ export default {
             label: "姓名",
             fixed: true
           });
+          this.tableHead.unshift({
+            prop: "D_BMMC",
+            label: "部门",
+            fixed: false
+          });
+          this.tableHead.forEach(item => {
+            tableHeadAttr[item.prop] = item.deduction
+          })
         }
       );
       // 获取表格数据
@@ -156,16 +160,39 @@ export default {
         data => {
           data.forEach((item, index) => {
             let obj = {};
+            obj.S_GZHJ = 0.00;
             item.forEach(innerItem => {
+              if (tableHeadAttr[innerItem.Key] == '是') {
+                obj.S_GZHJ -= parseFloat(innerItem.Value)
+              } else if (tableHeadAttr[innerItem.Key] == '否') {
+                obj.S_GZHJ += parseFloat(innerItem.Value)
+              }
               obj[innerItem.Key] = innerItem.Value;
             });
+            obj.S_GZHJ = obj.S_GZHJ.toFixed(2);
             this.tableData.push(obj);
           });
+
+          // 统计各工资项总和
+          let sumRow = {};
+          for (const key in tableHeadAttr) {
+            if (key == 'D_BMMC' || key == 'S_XM' || key == 'S_YGBH') continue;
+            sumRow[key] = 0.00;
+            this.tableData.forEach(item => {
+              sumRow[key] += parseFloat(item[key]);
+            })
+            sumRow[key] = sumRow[key].toFixed(2);
+          }
+          sumRow.D_BMMC = "总计";
+          sumRow.S_XM = "共" + this.tableData.length + "人";
+          sumRow.S_YGBH = "";
+          this.tableData.push(sumRow);
         }
       );
     },
     // 跳转至详情页
     goToDetailPage(label, row) {
+      if (row.D_BMMC == '总计') return;
       if (label == "姓名") this.detailPage = true;
       this.staffCode = row.S_YGBH
     }

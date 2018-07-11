@@ -54,11 +54,7 @@
 
 <script>
 export default {
-  props: [
-    "dialogVisible",
-    "dialogTitle",
-    "rowData",
-  ],
+  props: ["dialogVisible", "dialogTitle", "rowData"],
   data() {
     return {
       optionsOfSelector_1: [], // 部门下拉列表数据
@@ -71,7 +67,7 @@ export default {
         DLKL: "",
         QRDLKL: "",
         LXR: "",
-        LXFS:"",
+        LXFS: "",
         YHJS: "",
         YWBH: "",
         BZ: "",
@@ -84,21 +80,15 @@ export default {
         XTDLM: [
           { required: true, message: "请填写系统登录名", trigger: "blur" }
         ],
-        YHMC: [
-          { required: true, message: "请填写用户名称", trigger: "blur" }
-        ],
+        YHMC: [{ required: true, message: "请填写用户名称", trigger: "blur" }],
         SUDWBH: [
           { required: true, message: "请选择所在部门", trigger: "change" }
         ],
-        DLKL: [
-          { required: true, message: "请填写登陆密码", trigger: "blur" }
-        ],
+        DLKL: [{ required: true, message: "请填写登陆密码", trigger: "blur" }],
         QRDLKL: [
           { required: true, message: "请确认登陆密码", trigger: "blur" }
         ],
-        YHJS: [
-          { required: true, message: "请选择用户角色", trigger: "change" }
-        ]
+        YHJS: [{ required: true, message: "请选择用户角色", trigger: "change" }]
       }
     };
   },
@@ -119,6 +109,7 @@ export default {
           this.form[key] = this.rowData[key];
         }
         this.form.YHBHOPT = this.$store.state.yhbh;
+        this.form.QRDLKL = "";
         this.form.YHJS += "";
       }
     }
@@ -146,6 +137,12 @@ export default {
     },
     // 提交字段
     handleSubmit() {
+      if (this.form.DLKL != this.form.QRDLKL) {
+        this.$alert("两次输入密码不一致！", "提示", {
+          confirmButtonText: "确定"
+        });
+        return;
+      }
       this.submitForm(
         "fieldForm",
         "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/SaveUser",
@@ -158,7 +155,7 @@ export default {
     // 取消编辑
     closeDialog() {
       this.$emit("changeDialogStatus", false);
-      this.resetForm('fieldForm');
+      this.resetForm("fieldForm");
     }
   },
   created() {

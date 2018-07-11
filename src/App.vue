@@ -44,6 +44,7 @@
                 <template slot="title"><i class="el-icon-setting"></i>系统设置</template>
                   <el-menu-item index="2-1" @click="addTab(editableTabsValue, '员工管理', 'StaffManage', true, '2')">员工管理</el-menu-item>
                   <el-menu-item index="2-2" @click="addTab(editableTabsValue, '用户管理', 'UserManage', true, '2')">用户管理</el-menu-item>
+                  <el-menu-item index="2-3" @click="addTab(editableTabsValue, '单位管理', 'DepartmentManage', true, '2')">单位管理</el-menu-item>
               </el-submenu>
               <el-submenu index="3">
                 <template slot="title"><i class="el-icon-date"></i>系统日志</template>
@@ -91,6 +92,7 @@ import HomePage from "./components/homePage";
 import PersonalSalary from "./components/personalSalary";
 import StaffManage from "./components/staffManage";
 import UserManage from "./components/userManage";
+import DepartmentManage from "./components/departmentManage";
 
 export default {
   data() {
@@ -134,7 +136,8 @@ export default {
     HomePage,
     PersonalSalary,
     StaffManage,
-    UserManage
+    UserManage,
+    DepartmentManage
   },
   watch: {
     editableTabs: {
