@@ -75,11 +75,7 @@
 
 <script>
 export default {
-  props: [
-    "dialogVisible",
-    "dialogTitle",
-    "rowData",
-  ],
+  props: ["dialogVisible", "dialogTitle", "rowData"],
   data() {
     return {
       optionsOfSelector_1: [], // 职务下拉列表数据
@@ -95,7 +91,7 @@ export default {
         S_ZC: "",
         S_SZBMBH: "",
         S_BZQK: "",
-        S_GZMBMC:"",
+        S_GZMBMC: "",
         S_SFBZCY: "",
         S_CJGZSJ: "",
         S_ccbno: "",
@@ -108,24 +104,14 @@ export default {
       },
       // 表单字段验证规则
       rules: {
-        S_XM: [
-          { required: true, message: "请填写员工姓名", trigger: "blur" }
-        ],
-        S_XB: [
-          { required: true, message: "请选择性别", trigger: "change" }
-        ],
-        S_ZW: [
-          { required: true, message: "请选择职务", trigger: "change" }
-        ],
-        S_ZC: [
-          { required: true, message: "请选择职称", trigger: "change" }
-        ],
+        S_XM: [{ required: true, message: "请填写员工姓名", trigger: "blur" }],
+        S_XB: [{ required: true, message: "请选择性别", trigger: "change" }],
+        S_ZW: [{ required: true, message: "请选择职务", trigger: "change" }],
+        S_ZC: [{ required: true, message: "请选择职称", trigger: "change" }],
         S_SZBMBH: [
           { required: true, message: "请选择所属部门", trigger: "change" }
         ],
-        S_BZQK: [
-          { required: true, message: "请选择编制", trigger: "change" }
-        ],
+        S_BZQK: [{ required: true, message: "请选择编制", trigger: "change" }],
         S_GZMBMC: [
           { required: true, message: "请选择工资模板", trigger: "change" }
         ],
@@ -136,7 +122,7 @@ export default {
           { required: true, message: "请填写参加工作时间", trigger: "blur" }
         ]
       },
-      requestAddress: '' // 调用的后台方法
+      requestAddress: "" // 调用的后台方法
     };
   },
   watch: {
@@ -151,92 +137,59 @@ export default {
         this.form.S_ID = 0;
         this.form.S_YGBH = "";
         // 调用的后台方法
-        this.requestAddress = "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/AddANewMember"
+        this.requestAddress =
+          "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/AddANewMember";
       } else {
         // 给表单赋默认值
         for (var key in this.rowData) {
           this.form[key] = this.rowData[key];
         }
         // 调用的后台方法
-        this.requestAddress = "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/UpdateAMember"
+        this.requestAddress =
+          "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/UpdateAMember";
       }
     }
   },
   methods: {
-    // 获取职务下拉列表数据
-    getOptionsOfSelector_1() {
-      this.$get(
-        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllZWB",
-        { yhbh: this.$store.state.yhbh },
-        data => {
-          this.optionsOfSelector_1 = data;
-        }
-      );
-    },
-    // 获取职称下拉列表数据
-    getOptionsOfSelector_2() {
-      this.$get(
-        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllZCB",
-        { yhbh: this.$store.state.yhbh },
-        data => {
-          this.optionsOfSelector_2 = data;
-        }
-      );
-    },
-    // 获取部门下拉列表数据
-    getOptionsOfSelector_3() {
-      this.$get(
-        "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/Get_All_DWXX",
-        { yhbh: this.$store.state.yhbh },
-        data => {
-          this.optionsOfSelector_3 = data;
-        }
-      );
-    },
-    // 获取编制情况下拉列表数据
-    getOptionsOfSelector_4() {
-      this.$get(
-        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllBZLX",
-        { yhbh: this.$store.state.yhbh },
-        data => {
-          this.optionsOfSelector_4 = data;
-        }
-      );
-    },
-    // 获取工资模板下拉列表数据
-    getOptionsOfSelector_5() {
-      this.$get(
-        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllGZMB",
-        { yhbh: this.$store.state.yhbh },
-        data => {
-          this.optionsOfSelector_5 = data;
-        }
-      );
-    },
     // 提交字段
     handleSubmit() {
-      this.submitForm(
-        "fieldForm",
-        this.requestAddress,
-        this.form,
-        data => {
-          this.$emit("changeDialogStatus", false);
-        }
-      );
+      this.submitForm("fieldForm", this.requestAddress, this.form, data => {
+        this.$emit("changeDialogStatus", false);
+      });
     },
     // 取消编辑
     closeDialog() {
       this.$emit("changeDialogStatus", false);
-      this.resetForm('fieldForm');
+      this.resetForm("fieldForm");
     }
   },
   created() {
     // 获取下拉列表
-    this.getOptionsOfSelector_1();
-    this.getOptionsOfSelector_2();
-    this.getOptionsOfSelector_3();
-    this.getOptionsOfSelector_4();
-    this.getOptionsOfSelector_5();
+    this.getSelectorData(
+      "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllZWB",
+      { yhbh: this.$store.state.yhbh },
+      "optionsOfSelector_1"
+    );
+    this.getSelectorData(
+      "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllZCB",
+      { yhbh: this.$store.state.yhbh },
+      "optionsOfSelector_2"
+    );
+    this.getSelectorData(
+      "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/Get_All_DWXX",
+      { yhbh: this.$store.state.yhbh },
+      "optionsOfSelector_3"
+    );
+    this.getSelectorData(
+      "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllBZLX",
+      { yhbh: this.$store.state.yhbh },
+      "optionsOfSelector_4"
+    );
+    this.getSelectorData(
+      "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllGZMB",
+      { yhbh: this.$store.state.yhbh },
+      "optionsOfSelector_5"
+    );
   }
 };
 </script>

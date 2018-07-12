@@ -2,6 +2,14 @@ import Vue from 'vue'
 import Axios from 'axios'
 
 
+// 获取下拉框数据
+Vue.prototype.getSelectorData = function (requestAddress, params, selector) {
+    Axios.get(requestAddress, { params: params })
+        .then(res => {
+            this[selector] = res.data;
+        })
+}
+
 // 提交表单
 Vue.prototype.submitForm = function (formName, requestAddress, params, func) {
     this.$refs[formName].validate(valid => {

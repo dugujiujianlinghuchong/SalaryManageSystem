@@ -115,26 +115,6 @@ export default {
     }
   },
   methods: {
-    // 获取部门下拉列表数据
-    getOptionsOfSelector_1() {
-      this.$get(
-        "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/Get_All_DWXX",
-        { yhbh: this.$store.state.yhbh },
-        data => {
-          this.optionsOfSelector_1 = data;
-        }
-      );
-    },
-    // 获取角色下拉列表数据
-    getOptionsOfSelector_2() {
-      this.$get(
-        "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/Get_All_JSLX",
-        {},
-        data => {
-          this.optionsOfSelector_2 = data;
-        }
-      );
-    },
     // 提交字段
     handleSubmit() {
       if (this.form.DLKL != this.form.QRDLKL) {
@@ -160,8 +140,16 @@ export default {
   },
   created() {
     // 获取下拉列表
-    this.getOptionsOfSelector_1();
-    this.getOptionsOfSelector_2();
+    this.getSelectorData(
+      "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/Get_All_DWXX",
+      { yhbh: this.$store.state.yhbh },
+      "optionsOfSelector_1"
+    );
+    this.getSelectorData(
+      "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/Get_All_JSLX",
+      {},
+      "optionsOfSelector_2"
+    );
   }
 };
 </script>

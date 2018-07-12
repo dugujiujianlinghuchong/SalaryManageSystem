@@ -102,26 +102,6 @@ export default {
     },
   },
   methods: {
-    // 获取工资项下拉列表数据
-    getOptionsOfSelector_1() {
-      this.$get(
-        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllGZX_ByGZMBLX",
-        { strGZMBMC: this.gzmbmc },
-        data => {
-          this.optionsOfSelector_1 = data;
-        }
-      );
-    },
-    // 获取单位下拉列表数据
-    getOptionsOfSelector_2() {
-      this.$get(
-        "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/Get_All_DWXX",
-        { yhbh: this.$store.state.yhbh },
-        data => {
-          this.optionsOfSelector_2 = data;
-        }
-      );
-    },
     // 提交字段
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
@@ -152,8 +132,16 @@ export default {
   },
   created() {
     // 获取下拉列表
-    this.getOptionsOfSelector_1();
-    this.getOptionsOfSelector_2();
+    this.getSelectorData(
+      "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllGZX_ByGZMBLX",
+      { strGZMBMC: this.gzmbmc },
+      "optionsOfSelector_1"
+    );
+    this.getSelectorData(
+      "http://localhost/Gateway4CWGL/MinaMap_UserService.svc/Get_All_DWXX",
+      { yhbh: this.$store.state.yhbh },
+      "optionsOfSelector_2"
+    );
   }
 };
 </script>

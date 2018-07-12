@@ -46,6 +46,7 @@
                   <el-menu-item index="2-2" @click="addTab(editableTabsValue, '用户管理', 'UserManage', true, '2')">用户管理</el-menu-item>
                   <el-menu-item index="2-3" @click="addTab(editableTabsValue, '单位管理', 'DepartmentManage', true, '2')">单位管理</el-menu-item>
                   <el-menu-item index="2-4" @click="addTab(editableTabsValue, '工资项管理', 'SalaryProjectManage', true, '2')">工资项管理</el-menu-item>
+                  <el-menu-item index="2-5" @click="addTab(editableTabsValue, '工资模板管理', 'SalaryTemplatetManage', true, '2')">工资模板管理</el-menu-item>
               </el-submenu>
               <el-submenu index="3">
                 <template slot="title"><i class="el-icon-date"></i>系统日志</template>
@@ -95,6 +96,7 @@ import StaffManage from "./components/staffManage";
 import UserManage from "./components/userManage";
 import DepartmentManage from "./components/departmentManage";
 import SalaryProjectManage from "./components/salaryProjectManage";
+import SalaryTemplatetManage from "./components/salaryTemplateManage";
 
 export default {
   data() {
@@ -140,7 +142,8 @@ export default {
     StaffManage,
     UserManage,
     DepartmentManage,
-    SalaryProjectManage
+    SalaryProjectManage,
+    SalaryTemplatetManage
   },
   watch: {
     editableTabs: {

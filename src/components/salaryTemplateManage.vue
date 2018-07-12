@@ -5,7 +5,7 @@
         <!-- 工具栏 -->
         <el-header>
           <el-form ref="form" :model="searchField">
-            <el-button size='mini' type="primary" @click='editTableRow("dialogVisible", "dialogTitle", "rowData", "新增工资项", {})'>添加</el-button>
+            <el-button size='mini' type="primary" @click='editTableRow("dialogVisible", "dialogTitle", "rowData", "新增工资模板", {})'>添加</el-button>
           </el-form>
         </el-header>
         <!-- 工具栏 end -->
@@ -15,14 +15,15 @@
           <el-table :data="tableData" :max-height="tableHeigt" size='small' stripe border>
             <el-table-column label="操作" align="center" width="150">
               <template slot-scope="scope">
-                <el-button size="mini" type="primary" @click="editTableRow('dialogVisible', 'dialogTitle', 'rowData', '编辑工资项', scope.row)">编辑</el-button>
-                <el-button size="mini" type="danger" @click="deleteTableRow('http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/DeleteAGZX', { id: scope.row.W_GZXBH })">删除</el-button>
+                <el-button size="mini" type="primary" @click="editTableRow('dialogVisible', 'dialogTitle', 'rowData', '编辑工资模板', scope.row)">编辑</el-button>
+                <el-button size="mini" type="danger" @click="deleteTableRow('http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/DeleteAGZMBX', { id: scope.row.MB_ID })">删除</el-button>
               </template>
             </el-table-column>
-            <el-table-column prop="W_GZXBH" label="工资项编号" align="center"></el-table-column>
-            <el-table-column prop="W_GZXMC" label="工资项名称" align="center"></el-table-column>
-            <el-table-column prop="W_SFKCX" label="是否扣除项" align="center"></el-table-column>
-            <el-table-column prop="W_SFJSX" label="是否计税项" align="center"></el-table-column>
+            <el-table-column prop="MB_ID" label="编号" align="center"></el-table-column>
+            <el-table-column prop="X_GZMBMC" label="工资模板" align="center"></el-table-column>
+            <el-table-column prop="W_GZXMC" label="工资项" align="center"></el-table-column>
+            <el-table-column prop="GZBLXMC" label="工资表类型" align="center"></el-table-column>
+            <el-table-column prop="GZXCZKH" label="工资项出账银行卡卡号" align="center"></el-table-column>
             <el-table-column prop="BZ" label="备注" align="center"></el-table-column>
           </el-table>
           <br>
@@ -30,19 +31,19 @@
         <!-- 展示内容 end -->
 
         <!-- 编辑表格数据对话框 -->
-        <edit-salary-project 
+        <edit-salary-template 
           :dialogVisible='dialogVisible' 
           :dialogTitle='dialogTitle' 
           :rowData='rowData' 
           @changeDialogStatus='changeDialogStatus'
-        ></edit-salary-project>
+        ></edit-salary-template>
       </div>
     </el-container>
   </div>
 </template>
 
 <script>
-import EditSalaryProject from "./dialogForm/editSalaryProject";
+import EditSalaryTemplate from "./dialogForm/editSalaryTemplate";
 
 export default {
   data() {
@@ -60,7 +61,7 @@ export default {
     };
   },
   components: {
-    EditSalaryProject
+    EditSalaryTemplate
   },
   watch: {
   },
@@ -82,7 +83,7 @@ export default {
     // 获取表格信息
     getTableData() {
       this.$get(
-        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllGZX",
+        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/GetAllGZMBInfo",
         this.searchField,
         data => {
           this.tableData = data;
