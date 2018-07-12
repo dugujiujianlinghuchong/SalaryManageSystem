@@ -91,14 +91,14 @@
       <el-card>
         <div slot="header" class="clearfix">
           <span>本月工资项</span>
-          <el-button size='mini' type="primary" @click="handleAdd">添加</el-button>
+          <el-button size='mini' type="primary" @click='editTableRow("dialogVisible", "dialogTitle", "rowData", "新增工资项", {})'>添加</el-button>
         </div>
         <div class="text">
           <el-table :data="tableData" max-height="446" size='small' stripe border>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
-                <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                <el-button size="mini" type="primary" @click="editTableRow('dialogVisible', 'dialogTitle', 'rowData', '编辑工资项', scope.row)">编辑</el-button>
+                <el-button size="mini" type="danger" @click="deleteTableRow('http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/DeleteAGZB', { id: scope.row.W_ID })">删除</el-button>
               </template>
             </el-table-column>
             <el-table-column prop="W_GZXMC" label="工资项" align="center"></el-table-column>
@@ -120,7 +120,6 @@
       :dialogTitle='dialogTitle' 
       :staffCode='staffCode'
       :searchFiled='searchFiled' 
-      :editOrAdd='editOrAdd'
       :rowData='rowData' 
       :gzmbmc='gzmbmc' 
       @changeDialogStatus='changeDialogStatus'
@@ -151,7 +150,6 @@ export default {
       /* 以下为传递给子组件的数据 */
       dialogVisible: false, // 编辑表格对话框状态
       dialogTitle: "", // 编辑表格对话框标题
-      editOrAdd: "", // 新增/编辑表单
       rowData: {} // 选中编辑行的数据
     };
   },
@@ -210,38 +208,6 @@ export default {
           this.gzzj = this.gzzj.toFixed(2);
         }
       );
-    },
-    // 删除表格行
-    handleDelete(index, row) {
-      this.$get(
-        "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/DeleteAGZB",
-        { id: row.W_ID },
-        data => {
-          if (data != "true:") {
-            this.$alert("删除失败！", "提示", {
-              confirmButtonText: "确定"
-            });
-          } else {
-            this.getTableData();
-          }
-        }
-      );
-    },
-    // 打开新增表格行对话框
-    handleAdd() {
-      this.dialogVisible = true;
-      this.dialogTitle = "添加工资项";
-      this.editOrAdd = "add";
-    },
-    // 打开编辑表格行对话框
-    handleEdit(index, row) {
-      this.dialogVisible = true;
-      this.dialogTitle = "编辑工资项";
-      this.editOrAdd = "edit";
-      // 给表单赋默认值
-      for (var key in row) {
-        this.rowData[key] = row[key];
-      }
     },
     // 监听子组件对话框状态
     changeDialogStatus(dialogStatus) {

@@ -43,7 +43,6 @@ export default {
     "dialogTitle",
     "staffCode",
     "searchFiled",
-    "editOrAdd",
     "rowData",
     "gzmbmc"
   ],
@@ -82,8 +81,9 @@ export default {
     };
   },
   watch: {
-    editOrAdd(newVal) {
-      if (newVal == "add") {
+    // 判断新增/编辑
+    rowData(newVal) {
+      if (Object.keys(newVal).length == 0) {
         // 重置表单
         for (var key in this.form) {
           this.form[key] = "";
@@ -99,7 +99,7 @@ export default {
           this.form[key] = this.rowData[key];
         }
       }
-    }
+    },
   },
   methods: {
     // 获取工资项下拉列表数据
@@ -152,7 +152,6 @@ export default {
   },
   created() {
     // 获取下拉列表
-    // this.getOptions.getOptionsOfSelector_1()
     this.getOptionsOfSelector_1();
     this.getOptionsOfSelector_2();
   }
