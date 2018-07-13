@@ -2,6 +2,13 @@ import Vue from 'vue'
 import Axios from 'axios'
 
 
+// 打开编辑表格行对话框
+Vue.prototype.editTableRow = function (dialogVisable, dialogTitle, rowData, dialogName, row) {
+    this[dialogVisable] = true;
+    this[dialogTitle] = dialogName;
+    this[rowData] = row;
+}
+
 // 获取下拉框数据
 Vue.prototype.getSelectorData = function (requestAddress, params, selector) {
     Axios.get(requestAddress, { params: params })
@@ -29,13 +36,6 @@ Vue.prototype.resetForm = function (formName) {
     if (this.$refs[formName] !== undefined) {
         this.$refs[formName].resetFields();
     }
-}
-
-// 打开编辑表格行对话框
-Vue.prototype.editTableRow = function (dialogVisable, dialogTitle, rowData, dialogName, row) {
-    this[dialogVisable] = true;
-    this[dialogTitle] = dialogName;
-    this[rowData] = row;
 }
 
 // 删除表格行

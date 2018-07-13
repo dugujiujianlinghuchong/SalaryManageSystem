@@ -3,13 +3,12 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const url = require('url')
 const publicPath = ''
-// 兼容坑逼IE
-// import "babel-polyfill"
+
 
 module.exports = (options = {}) => ({
   entry: {
-    index: './src/main.js'
-    // index: ["babel-polyfill", "./src/main.js"]
+    // index: './src/main.js'
+    index: ["babel-polyfill", "./src/main.js"] // 兼容垃圾IE
   },
   output: {
     path: resolve(__dirname, 'dist'),

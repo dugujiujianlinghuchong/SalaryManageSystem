@@ -112,12 +112,6 @@ export default {
         }
       });
     },
-    // 重置表单
-    resetForm(formName) {
-      if (this.$refs[formName] !== undefined) {
-        this.$refs[formName].resetFields();
-      }
-    },
     // 取消编辑
     closeDialog() {
       this.$emit("changeDialogStatus", false);

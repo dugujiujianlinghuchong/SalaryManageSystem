@@ -5,7 +5,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 // 引入封装好的axios
 import './utils/http'
 import App from './App.vue'
-// 兼容ie
+// 兼容垃圾IE
 import promise from 'es6-promise'
 promise.polyfill();
 // 引入echart

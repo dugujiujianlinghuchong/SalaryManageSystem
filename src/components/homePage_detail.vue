@@ -212,7 +212,6 @@ export default {
     // 监听子组件对话框状态
     changeDialogStatus(dialogStatus) {
       this.dialogVisible = dialogStatus;
-      this.editOrAdd = "";
       this.getTableData();
     }
   },
