@@ -15,6 +15,8 @@ Vue.prototype.$echarts = echarts
 import { store } from './utils/vuex'
 // 引入公共方法
 import './utils/publicFunction'
+// 引入扩展图标
+import "./assets/icon/iconfont.css"
 
 Vue.use(ElementUI)
 
