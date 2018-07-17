@@ -34,19 +34,22 @@
       <!-- 左栏 -->
       <el-col id="left" :xs="7" :sm="6" :md="5" :lg="3" :xl="3">
         <div class="grid-content bg-purple" >
-            <el-menu :default-openeds="opens">
+            <el-menu :default-openeds="opens" :default-active='editableTabsIndex'>
               <el-submenu index="1">
                 <template slot="title"><i class="el-icon-info"></i>工资管理</template>
-                  <el-menu-item index="1-1" @click="addTab(editableTabsValue, '主页', 'HomePage', false, '1')">主页</el-menu-item>
-                  <el-menu-item index="1-2" @click="addTab(editableTabsValue, '个人工资统计', 'PersonalSalary', true, '1')">个人工资统计</el-menu-item>
+                  <el-menu-item index="1-1" @click="addTab(editableTabsValue, '主页', 'HomePage', false, '1-1')">主页</el-menu-item>
+                  <el-menu-item index="1-2" @click="addTab(editableTabsValue, '个人工资统计', 'PersonalSalary', true, '1-2')">个人工资统计</el-menu-item>
               </el-submenu>
               <el-submenu index="2">
                 <template slot="title"><i class="el-icon-setting"></i>系统设置</template>
-                  <el-menu-item index="2-1" @click="addTab(editableTabsValue, '员工管理', 'StaffManage', true, '2')">员工管理</el-menu-item>
-                  <el-menu-item index="2-2" @click="addTab(editableTabsValue, '用户管理', 'UserManage', true, '2')">用户管理</el-menu-item>
-                  <el-menu-item index="2-3" @click="addTab(editableTabsValue, '单位管理', 'DepartmentManage', true, '2')">单位管理</el-menu-item>
-                  <el-menu-item index="2-4" @click="addTab(editableTabsValue, '工资项管理', 'SalaryProjectManage', true, '2')">工资项管理</el-menu-item>
-                  <el-menu-item index="2-5" @click="addTab(editableTabsValue, '工资模板管理', 'SalaryTemplatetManage', true, '2')">工资模板管理</el-menu-item>
+                  <el-menu-item index="2-1" @click="addTab(editableTabsValue, '员工管理', 'StaffManage', true, '2-1')">员工管理</el-menu-item>
+                  <el-menu-item index="2-2" @click="addTab(editableTabsValue, '用户管理', 'UserManage', true, '2-2')">用户管理</el-menu-item>
+                  <el-menu-item index="2-3" @click="addTab(editableTabsValue, '单位管理', 'DepartmentManage', true, '2-3')">单位管理</el-menu-item>
+                  <el-menu-item index="2-4" @click="addTab(editableTabsValue, '工资项管理', 'SalaryProjectManage', true, '2-4')">工资项管理</el-menu-item>
+                  <el-menu-item index="2-5" @click="addTab(editableTabsValue, '工资模板管理', 'SalaryTemplatetManage', true, '2-5')">工资模板管理</el-menu-item>
+                  <el-menu-item index="2-6" @click="addTab(editableTabsValue, '编制类型管理', 'FormationTypeManage', true, '2-6')">编制类型管理</el-menu-item>
+                  <el-menu-item index="2-7" @click="addTab(editableTabsValue, '职称管理', 'PositionalTitleManage', true, '2-7')">职称管理</el-menu-item>
+                  <el-menu-item index="2-8" @click="addTab(editableTabsValue, '职务管理', 'PostManage', true, '2-8')">职务管理</el-menu-item>
               </el-submenu>
               <el-submenu index="3">
                 <template slot="title"><i class="el-icon-date"></i>系统日志</template>
@@ -97,6 +100,9 @@ import UserManage from "./components/userManage";
 import DepartmentManage from "./components/departmentManage";
 import SalaryProjectManage from "./components/salaryProjectManage";
 import SalaryTemplatetManage from "./components/salaryTemplateManage";
+import FormationTypeManage from "./components/formationTypeManage";
+import PositionalTitleManage from "./components/positionalTitleManage";
+import PostManage from "./components/postManage";
 
 export default {
   data() {
@@ -123,13 +129,14 @@ export default {
       yhbh: "",
       dlm: "",
       editableTabsValue: "0",
+      editableTabsIndex: "1-1",
       editableTabs: [
         {
           title: "主页",
           name: "0",
           content: "HomePage",
           closable: false,
-          parentIndex: "1"
+          itemIndex: "1-1"
         }
       ],
       tabIndex: 0,
@@ -143,18 +150,29 @@ export default {
     UserManage,
     DepartmentManage,
     SalaryProjectManage,
-    SalaryTemplatetManage
+    SalaryTemplatetManage,
+    FormationTypeManage,
+    PositionalTitleManage,
+    PostManage
   },
   watch: {
     editableTabs: {
       handler(newVal) {
         let openTabs = []
         newVal.forEach(item => {
-          openTabs.push(item.parentIndex);
+          let parentIndex = item.itemIndex.split('')[0]
+          openTabs.push(parentIndex);
         })
         this.opens = openTabs;
       },
       deep: true
+    },
+    editableTabsValue(newVal) {
+      let val = newVal + '';
+      for(let i = 0; i < this.editableTabs.length; i++) {
+        if (this.editableTabs[i].name == val) this.editableTabsIndex = this.editableTabs[i].itemIndex
+      }
+      console.log(this.editableTabsIndex);
     }
   },
   methods: {
@@ -179,7 +197,7 @@ export default {
         }
       );
     },
-    addTab(targetName, title, content, closable, parentIndex) {
+    addTab(targetName, title, content, closable, itemIndex) {
       for (var i = 0; i < this.editableTabs.length; i++) {
         if (this.editableTabs[i].title == title) {
           this.editableTabsValue = this.editableTabs[i].name;
@@ -193,7 +211,7 @@ export default {
         name: newTabName,
         content: content,
         closable: closable,
-        parentIndex: parentIndex
+        itemIndex: itemIndex
       });
       this.editableTabsValue = newTabName;
     },
@@ -297,6 +315,13 @@ export default {
 .grid-content {
   border-radius: 4px;
   min-height: 36px;
+}
+
+.test {
+  color: #409EFF
+}
+.test2 {
+  color: #303133;
 }
 
 // 以下是登录页css
