@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Axios from 'axios'
 
 
-Vue.prototype.$http = Axios
+Vue.prototype.axios = Axios
 // GET请求方法
 Vue.prototype.$get = function (address, params, func) {
     Axios.get(address, { params: params })

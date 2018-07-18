@@ -6,7 +6,7 @@
         <h1>工资管理系统</h1>
         <div class="toolbar">
           <el-dropdown>
-            <i class="el-icon-setting" style="margin-right: 15px;margin-left: 15px"></i>
+            <i class="el-icon-setting" style="margin-right:15px;margin-left:15px;cursor:pointer"></i>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
                 <span @click="yhbh=''">退出系统</span>

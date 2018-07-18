@@ -9,6 +9,7 @@
             <yf :yf='searchField.intMonth' @changeYF='changeYF'></yf>
             <bm v-show="!detailPage" :bmbh='searchField.bmbh' @changeBMBH='changeBMBH'></bm>
             <gzmb v-show="!detailPage" :gzmb='searchField.gzmbmc' @changeGZMB='changeGZMB'></gzmb>
+            <el-button v-show="!detailPage" @click="dowload('http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/ExportHT_GZTExcelFile','?ND=2015&yf=12')" size='mini' type="primary">导出工资表</el-button>
             <el-button v-show="detailPage" @click="detailPage = false" size='mini' type="primary">返回</el-button>
           </el-form>
         </el-header>
@@ -59,7 +60,7 @@ export default {
       detailPage: false, // 详情页状态
 
       /* 以下为传递给子组件的数据 */
-      staffCode: '', // 员工编号
+      staffCode: "" // 员工编号
     };
   },
   components: {
@@ -149,8 +150,8 @@ export default {
             fixed: false
           });
           this.tableHead.forEach(item => {
-            tableHeadAttr[item.prop] = item.deduction
-          })
+            tableHeadAttr[item.prop] = item.deduction;
+          });
         }
       );
       // 获取表格数据
@@ -160,12 +161,12 @@ export default {
         data => {
           data.forEach((item, index) => {
             let obj = {};
-            obj.S_GZHJ = 0.00;
+            obj.S_GZHJ = 0.0;
             item.forEach(innerItem => {
-              if (tableHeadAttr[innerItem.Key] == '是') {
-                obj.S_GZHJ -= parseFloat(innerItem.Value)
-              } else if (tableHeadAttr[innerItem.Key] == '否') {
-                obj.S_GZHJ += parseFloat(innerItem.Value)
+              if (tableHeadAttr[innerItem.Key] == "是") {
+                obj.S_GZHJ -= parseFloat(innerItem.Value);
+              } else if (tableHeadAttr[innerItem.Key] == "否") {
+                obj.S_GZHJ += parseFloat(innerItem.Value);
               }
               obj[innerItem.Key] = innerItem.Value;
             });
@@ -176,11 +177,11 @@ export default {
           // 统计各工资项总和
           let sumRow = {};
           for (const key in tableHeadAttr) {
-            if (key == 'D_BMMC' || key == 'S_XM' || key == 'S_YGBH') continue;
-            sumRow[key] = 0.00;
+            if (key == "D_BMMC" || key == "S_XM" || key == "S_YGBH") continue;
+            sumRow[key] = 0.0;
             this.tableData.forEach(item => {
               sumRow[key] += parseFloat(item[key]);
-            })
+            });
             sumRow[key] = sumRow[key].toFixed(2);
           }
           sumRow.D_BMMC = "总计";
@@ -192,10 +193,22 @@ export default {
     },
     // 跳转至详情页
     goToDetailPage(label, row) {
-      if (row.D_BMMC == '总计') return;
+      if (row.D_BMMC == "总计") return;
       if (label == "姓名") this.detailPage = true;
-      this.staffCode = row.S_YGBH
-    }
+      this.staffCode = row.S_YGBH;
+    },
+    // 下载工资表
+    // dowload() {
+    //   window.open('http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/ExportHT_GZTExcelFile?ND=2015&yf=12');
+    //   // let link = document.createElement("a");
+    //   // link.style.display = "none";
+    //   // link.href =
+    //   //   "http://localhost/Gateway4CWGL/MinaMap_CWGLService.svc/ExportHT_GZTExcelFile?ND=2015&yf=12";
+    //   // link.setAttribute("download", "excel.xls");
+
+    //   // document.body.appendChild(link);
+    //   // link.click();
+    // }
   }
 };
 </script>

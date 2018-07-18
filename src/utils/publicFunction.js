@@ -66,3 +66,8 @@ Vue.prototype.getGUID = function () {
     let guid = s.join("");
     return guid;
 }
+
+// 下载文件
+Vue.prototype.dowload = function (url, params) {
+    window.open(url + params)
+}
