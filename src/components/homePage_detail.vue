@@ -94,7 +94,7 @@
           <el-button size='mini' type="primary" @click='editTableRow("dialogVisible", "dialogTitle", "rowData", "新增工资项", {})'>添加</el-button>
         </div>
         <div class="text">
-          <el-table :data="tableData" max-height="446" size='small' stripe border>
+          <el-table :data="tableData" max-height="350" size='small' stripe border style="height:390px;">
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
                 <el-button size="mini" type="primary" @click="editTableRow('dialogVisible', 'dialogTitle', 'rowData', '编辑工资项', scope.row)">编辑</el-button>
@@ -284,19 +284,19 @@ export default {
     }
     .text {
       font-size: 12px;
-      height: 600px;
+      height: 500px;
       table {
         border: 1px solid #ebeef5;
         border-collapse: collapse;
-        height: 550px;
+        height: 450px;
         td:nth-child(1) {
-          width: 150px;
+          width: 200px;
           text-align: right;
           background: #f9f9fa;
           color: #909399;
         }
         td:nth-child(2) {
-          width: 180px;
+          width: 100px;
           text-align: left;
           color: #606266;
           padding-left: 10px;
