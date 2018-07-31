@@ -282,6 +282,7 @@ export default {
     height: 92%;
     border: 1px solid #e6e6e6;
     overflow: hidden;
+    overflow-y: auto;
     ul {
       border: none;
     }

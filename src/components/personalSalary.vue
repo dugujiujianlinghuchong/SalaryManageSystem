@@ -190,20 +190,21 @@ export default {
 <style lang='less' scoped>
 @media screen and (max-width: 1920px) {
   div .el-main {
-    height: 740px;
+    height: 550px;
     div {
-      height: 700px;
+      height: 500px;
     }
   }
 }
-@media screen and (max-width: 1366px) {
-  div .el-main {
-    height: 530px;
-    div {
-      height: 490px;
-    }
-  }
-}
+// @media screen and (max-width: 1400px) {
+//   div .el-main {
+//     height: 400px;
+//     div {
+//       height: 300px;
+//       background-color: red;
+//     }
+//   }
+// }
 div .panel {
   width: 100%;
   .el-header {
