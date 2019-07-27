@@ -9,7 +9,7 @@
             <i class="el-icon-setting" style="margin-right:15px;margin-left:15px;cursor:pointer"></i>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
-                <span @click="yhbh=''">退出系统</span>
+                <span @click="yhbh=''">退出</span>
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
